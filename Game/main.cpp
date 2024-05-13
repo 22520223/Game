@@ -15,6 +15,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "Mushroom.h"
 
 #include "SampleKeyEventHandler.h"
 
