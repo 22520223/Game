@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "Mushroom.h"
+#include "LuckyBrick.h"
 
 #include "Collision.h"
 
