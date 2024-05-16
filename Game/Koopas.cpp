@@ -10,7 +10,7 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPAS_STATE_IDLE)
+	if (state == KOOPAS_STATE_IDLE or state == KOOPAS_STATE_KICK_LEFT or state == KOOPAS_STATE_KICK_RIGHT)
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
 		top = y - KOOPAS_BBOX_HEIGHT_IDLE / 2;
@@ -41,13 +41,17 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vy = 0;
 	}
-	else if (e->nx != 0)
+	else if (e->nx != 0 && this->GetState() != KOOPAS_STATE_KICK_LEFT && this->GetState() != KOOPAS_STATE_KICK_RIGHT)
 	{
 		vx = -vx;
 		if (vx > 0)
 			SetState(KOOPAS_STATE_WALKING_RIGHT);
 		else
 			SetState(KOOPAS_STATE_WALKING_LEFT);
+	}
+	else if (e->nx != 0)
+	{
+		vx = -vx;
 	}
 }
 
@@ -76,7 +80,15 @@ void CKoopas::Render()
 	}
 	else if (state == KOOPAS_STATE_IDLE)
 	{
-		aniId = ID_ANI_KOOPAS_WALKING_IDLE;
+		aniId = ID_ANI_KOOPAS_IDLE;
+	}
+	else if (state == KOOPAS_STATE_KICK_LEFT)
+	{
+		aniId = ID_ANI_KOOPAS_IDLE;
+	}
+	else if (state == KOOPAS_STATE_KICK_RIGHT)
+	{
+		aniId = ID_ANI_KOOPAS_IDLE;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -96,6 +108,12 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_IDLE:
 		vx = 0;
+		break;
+	case KOOPAS_STATE_KICK_LEFT:
+		vx = KOOPAS_IDLE_SPEED;
+		break;
+	case KOOPAS_STATE_KICK_RIGHT:
+		vx = -KOOPAS_IDLE_SPEED;
 		break;
 	}
 }

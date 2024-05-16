@@ -37,10 +37,11 @@ koopas.txt
 
 
 #LuckyBrick
-7	100	100
+7	60	160
+7	20	100
 
 #LuckyBrickCoin
-8	80	100
+8	200	160
 
 #Block
 #9	160	160
