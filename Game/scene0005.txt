@@ -28,7 +28,7 @@ koopas.txt
 1	-10	80
 
 #Goomba
-2	160	100
+#2	160	100
 
 #Koopas
 3	160	160

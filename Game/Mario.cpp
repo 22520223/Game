@@ -68,6 +68,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLuckyBrickCoin(e);
 	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
 		OnCollisionWithBlock(e);
+	else if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -183,6 +185,39 @@ void CMario::OnCollisionWithBlock(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		
+	}
+}
+
+void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		if (koopas->GetState() != KOOPAS_STATE_WALKING_IDLE)
+		{
+			koopas->SetState(KOOPAS_STATE_WALKING_IDLE);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else
+	{
+		if (untouchable == 0)
+		{
+			if (koopas->GetState() != KOOPAS_STATE_WALKING_IDLE)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
 	}
 }
 
