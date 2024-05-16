@@ -17,6 +17,7 @@
 #include "Platform.h"
 #include "Mushroom.h"
 #include "LuckyBrick.h"
+#include "LuckyBrickCoin.h"
 
 #include "SampleKeyEventHandler.h"
 

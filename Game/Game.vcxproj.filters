@@ -90,6 +90,9 @@
     <ClInclude Include="LuckyBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LuckyBrickCoin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LuckyBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LuckyBrickCoin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

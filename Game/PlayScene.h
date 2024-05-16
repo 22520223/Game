@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Mushroom.h"
 #include "LuckyBrick.h"
+#include "LuckyBrickCoin.h"
 //#include "Koopas.h"
 
 

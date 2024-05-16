@@ -61,6 +61,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CLuckyBrick*>(e->obj))
 		OnCollisionWithLuckyBrick(e);
+	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
+		OnCollisionWithLuckyBrickCoin(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -118,7 +120,8 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 			if (level < MARIO_LEVEL_BIG)
 			{
 				level = MARIO_LEVEL_BIG;
-				vy = -0.2f;
+				if (isOnPlatform)
+					vy = -0.2f;
 			}
 			e->obj->Delete();
 	}
@@ -142,6 +145,28 @@ void CMario::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 		if (playScene)
 		{
 			playScene->AddObject(mushroom);
+		}
+	}
+}
+
+void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
+{
+	CLuckyBrickCoin* luckybrickcoin = dynamic_cast<CLuckyBrickCoin*>(e->obj);
+
+	if (e->ny > 0 and luckybrickcoin->GetState() != LUCKYBRICK_STATE5)
+	{
+		luckybrickcoin->SetState(LUCKYBRICK_STATE5);
+		D3DXVECTOR2 luckyBrickCoinPosition = luckybrickcoin->GetPosition();
+		float coinX = luckyBrickCoinPosition.x;
+		float coinY = luckyBrickCoinPosition.y - 20;
+
+		CCoin* coin = new CCoin(coinX, coinX);
+		coin->SetPosition(coinX, coinX);
+
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene)
+		{
+			playScene->AddObject(coin);
 		}
 	}
 }

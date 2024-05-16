@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
-#include "Coin.h"
-#include "Mushroom.h"
 
 #define ID_ANI_LUCKYBRICK 3500
 #define ID_ANI_LUCKYBRICK_STATE5 3501
@@ -17,7 +15,6 @@ public:
 	CLuckyBrick(float x, float y) : CGameObject(x, y) {}
 	void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	bool IsBreak();
 	D3DXVECTOR2 GetPosition()
 	{
 		return D3DXVECTOR2(x, y);
