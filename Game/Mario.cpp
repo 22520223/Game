@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Mushroom.h"
 #include "LuckyBrick.h"
+#include "PlayScene.h"
 
 #include "Collision.h"
 
@@ -58,6 +59,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CLuckyBrick*>(e->obj))
+		OnCollisionWithLuckyBrick(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -115,8 +118,31 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 			if (level < MARIO_LEVEL_BIG)
 			{
 				level = MARIO_LEVEL_BIG;
+				vy = -0.2f;
 			}
 			e->obj->Delete();
+	}
+}
+
+void CMario::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
+{
+	CLuckyBrick* luckybrick = dynamic_cast<CLuckyBrick*>(e->obj);
+
+	if (e->ny > 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
+	{
+		luckybrick->SetState(LUCKYBRICK_STATE5);
+		D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
+		float mushroomX = luckyBrickPosition.x;
+		float mushroomY = luckyBrickPosition.y - 20;
+
+		CMushroom* mushroom = new CMushroom(mushroomX, mushroomY);
+		mushroom->SetPosition(mushroomX, mushroomY);
+
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene)
+		{
+			playScene->AddObject(mushroom);
+		}
 	}
 }
 
