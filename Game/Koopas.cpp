@@ -10,11 +10,20 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - KOOPAS_BBOX_WIDTH / 2;
-	top = y - KOOPAS_BBOX_HEIGHT / 2;
-	right = left + KOOPAS_BBOX_WIDTH;
-	bottom = top + KOOPAS_BBOX_HEIGHT;
-	
+	if (state == KOOPAS_STATE_IDLE)
+	{
+		left = x - KOOPAS_BBOX_WIDTH / 2;
+		top = y - KOOPAS_BBOX_HEIGHT_IDLE / 2;
+		right = left + KOOPAS_BBOX_WIDTH;
+		bottom = top + KOOPAS_BBOX_HEIGHT_IDLE;
+	}
+	else
+	{
+		left = x - KOOPAS_BBOX_WIDTH / 2;
+		top = y - KOOPAS_BBOX_HEIGHT / 2;
+		right = left + KOOPAS_BBOX_WIDTH;
+		bottom = top + KOOPAS_BBOX_HEIGHT;
+	}
 }
 
 void CKoopas::OnNoCollision(DWORD dt)
@@ -65,7 +74,7 @@ void CKoopas::Render()
 	{
 		aniId = ID_ANI_KOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_WALKING_IDLE)
+	else if (state == KOOPAS_STATE_IDLE)
 	{
 		aniId = ID_ANI_KOOPAS_WALKING_IDLE;
 	}
@@ -85,7 +94,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_WALKING_RIGHT:
 		vx = KOOPAS_WALKING_SPEED;
 		break;
-	case KOOPAS_STATE_WALKING_IDLE:
+	case KOOPAS_STATE_IDLE:
 		vx = 0;
 		break;
 	}

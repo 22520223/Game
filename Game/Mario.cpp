@@ -194,9 +194,9 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		if (koopas->GetState() != KOOPAS_STATE_WALKING_IDLE)
+		if (koopas->GetState() != KOOPAS_STATE_IDLE)
 		{
-			koopas->SetState(KOOPAS_STATE_WALKING_IDLE);
+			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -204,7 +204,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != KOOPAS_STATE_WALKING_IDLE)
+			if (koopas->GetState() != KOOPAS_STATE_IDLE)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
