@@ -9,6 +9,9 @@
 #include "Portal.h"
 #include "Mushroom.h"
 #include "LuckyBrick.h"
+#include "LuckyBrickCoin.h"
+#include "Block.h"
+#include "Koopas.h"
 #include "PlayScene.h"
 
 #include "Collision.h"

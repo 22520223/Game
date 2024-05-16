@@ -10,7 +10,7 @@
 #include "LuckyBrick.h"
 #include "LuckyBrickCoin.h"
 #include "Block.h"
-//#include "Koopas.h"
+#include "Koopas.h"
 
 
 class CPlayScene : public CScene
