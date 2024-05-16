@@ -9,6 +9,7 @@
 #include "Mushroom.h"
 #include "LuckyBrick.h"
 #include "LuckyBrickCoin.h"
+#include "Block.h"
 //#include "Koopas.h"
 
 

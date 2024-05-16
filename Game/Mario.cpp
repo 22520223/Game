@@ -63,6 +63,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLuckyBrick(e);
 	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
 		OnCollisionWithLuckyBrickCoin(e);
+	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
+		OnCollisionWithBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -168,6 +170,16 @@ void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 		{
 			playScene->AddObject(coin);
 		}
+	}
+}
+
+void CMario::OnCollisionWithBlock(LPCOLLISIONEVENT e)
+{
+	CBlock* block = dynamic_cast<CBlock*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		
 	}
 }
 

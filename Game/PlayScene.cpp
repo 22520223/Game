@@ -122,6 +122,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_LUCKYBRICK: obj = new CLuckyBrick(x, y); break;
 	case OBJECT_TYPE_LUCKYBRICKCOIN: obj = new CLuckyBrickCoin(x, y); break;
+	case OBJECT_TYPE_BLOCK: obj = new CBlock(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{
