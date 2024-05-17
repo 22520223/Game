@@ -158,4 +158,8 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
+	}
 };

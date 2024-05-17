@@ -84,11 +84,11 @@ void CKoopas::Render()
 	}
 	else if (state == KOOPAS_STATE_KICK_LEFT)
 	{
-		aniId = ID_ANI_KOOPAS_IDLE;
+		aniId = ID_ANI_KOOPAS_IDLE_RIGHT;
 	}
 	else if (state == KOOPAS_STATE_KICK_RIGHT)
 	{
-		aniId = ID_ANI_KOOPAS_IDLE;
+		aniId = ID_ANI_KOOPAS_IDLE_LEFT;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);

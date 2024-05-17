@@ -22,6 +22,8 @@
 #define ID_ANI_KOOPAS_WALKING_RIGHT 6500
 #define ID_ANI_KOOPAS_WALKING_LEFT 6501
 #define ID_ANI_KOOPAS_IDLE 6502
+#define ID_ANI_KOOPAS_IDLE_RIGHT 6503
+#define ID_ANI_KOOPAS_IDLE_LEFT 6504
 
 class CKoopas : public CGameObject
 {
@@ -44,4 +46,8 @@ protected:
 public:
 	CKoopas(float x, float y);
 	virtual void SetState(int state);
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
+	}
 };
