@@ -4,7 +4,8 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
-	die_start = -1;
+	isKicked = false;
+	die_start = 0;
 	SetState(KOOPAS_STATE_WALKING_LEFT);
 }
 
@@ -60,10 +61,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPAS_STATE_DIE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+	if ((state == KOOPAS_STATE_IDLE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
 	{
-		isDeleted = true;
-		return;
+		SetState(KOOPAS_STATE_WALKING_LEFT);
+		D3DXVECTOR2 koopasPosition = this->GetPosition();
+		SetPosition(koopasPosition.x, koopasPosition.y - 5);
+		isKicked = false;
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -108,6 +111,8 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_IDLE:
 		vx = 0;
+		isKicked = true;
+		die_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_KICK_LEFT:
 		vx = KOOPAS_IDLE_SPEED;

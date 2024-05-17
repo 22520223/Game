@@ -10,12 +10,11 @@
 #define KOOPAS_BBOX_HEIGHT 24
 #define KOOPAS_BBOX_HEIGHT_IDLE 16
 
-#define KOOPAS_DIE_TIMEOUT 600
+#define KOOPAS_DIE_TIMEOUT 5000
 
 #define KOOPAS_STATE_WALKING_LEFT 777
 #define KOOPAS_STATE_WALKING_RIGHT 666
 #define KOOPAS_STATE_IDLE 660
-#define KOOPAS_STATE_DIE 112
 #define KOOPAS_STATE_KICK_LEFT 661
 #define KOOPAS_STATE_KICK_RIGHT 662
 
@@ -31,6 +30,7 @@ protected:
 	float ax;
 	float ay;
 
+	bool isKicked;
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
