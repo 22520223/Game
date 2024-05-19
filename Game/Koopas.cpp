@@ -1,5 +1,6 @@
 #include "Koopas.h"
-
+#include "CheckFall.h"
+#include "PlayScene.h"
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -37,10 +38,39 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
+	if (!haveCheck)
+	{
+		D3DXVECTOR2 koopasPosition = this->GetPosition();
+		CCheckFall* checkfall = new CCheckFall(koopasPosition.x, koopasPosition.y);
 
+		if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_LEFT)
+		{
+			checkfall->SetPosition(koopasPosition.x - 20, koopasPosition.y);
+			checkfall->SetState(CHECKFALL_STATE_LEFT);
+			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+			if (playScene)
+			{
+				playScene->AddObject(checkfall);
+			}
+		}
+		else if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_RIGHT)
+		{
+			checkfall->SetPosition(koopasPosition.x + 20, koopasPosition.y);
+			checkfall->SetState(CHECKFALL_STATE_RIGHT);
+			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+			if (playScene)
+			{
+				playScene->AddObject(checkfall);
+			}
+		}
+		
+		haveCheck = true;
+	}
+	
 	if (e->ny != 0)
 	{
 		vy = 0;
+		isOnPlatform = true;
 	}
 	else if (e->nx != 0 && this->GetState() != KOOPAS_STATE_KICK_LEFT && this->GetState() != KOOPAS_STATE_KICK_RIGHT)
 	{
@@ -60,7 +90,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	
 	if ((state == KOOPAS_STATE_IDLE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
 	{
 		SetState(KOOPAS_STATE_WALKING_LEFT);
@@ -68,6 +98,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetPosition(koopasPosition.x, koopasPosition.y - 5);
 		isKicked = false;
 	}
+
+	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -95,7 +127,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopas::SetState(int state)

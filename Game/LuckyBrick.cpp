@@ -8,7 +8,7 @@ void CLuckyBrick::Render()
 		aniId = ID_ANI_LUCKYBRICK_STATE5;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CLuckyBrick::GetBoundingBox(float& l, float& t, float& r, float& b)

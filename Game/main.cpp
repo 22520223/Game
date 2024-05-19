@@ -20,6 +20,7 @@
 #include "LuckyBrickCoin.h"
 #include "Block.h"
 #include "Koopas.h"
+#include "CheckFall.h"
 
 #include "SampleKeyEventHandler.h"
 

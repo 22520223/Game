@@ -30,8 +30,11 @@ protected:
 	float ax;
 	float ay;
 
+	bool haveCheck = false;
 	bool isKicked;
 	ULONGLONG die_start;
+
+	BOOLEAN isOnPlatform = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -49,5 +52,9 @@ public:
 	D3DXVECTOR2 GetPosition()
 	{
 		return D3DXVECTOR2(x, y);
+	}
+	void SethaveCheck(bool b)
+	{
+		haveCheck = b;
 	}
 };
