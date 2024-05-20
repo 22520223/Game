@@ -9,6 +9,7 @@ mushroom.txt
 luckybrick.txt
 block.txt
 koopas.txt
+checkfall.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

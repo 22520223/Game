@@ -45,7 +45,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 
 		if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_LEFT)
 		{
-			checkfall->SetPosition(koopasPosition.x - 20, koopasPosition.y);
+			checkfall->SetPosition(koopasPosition.x - 10, koopasPosition.y);
 			checkfall->SetState(CHECKFALL_STATE_LEFT);
 			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 			if (playScene)
@@ -55,7 +55,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		else if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
-			checkfall->SetPosition(koopasPosition.x + 20, koopasPosition.y);
+			checkfall->SetPosition(koopasPosition.x + 10, koopasPosition.y);
 			checkfall->SetState(CHECKFALL_STATE_RIGHT);
 			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 			if (playScene)

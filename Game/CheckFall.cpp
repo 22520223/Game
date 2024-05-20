@@ -17,8 +17,11 @@ void CCheckFall::GetBoundingBox(float& left, float& top, float& right, float& bo
 
 void CCheckFall::OnNoCollision(DWORD dt)
 {
+	float preY = y;
 	x += vx * dt;
 	y += vy * dt;
+	if (preY != y and isOnPlatform)
+		SetState(CHECKFALL_STATE_FALL);
 };
 
 void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -68,7 +71,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CCheckFall::Render()
 {
-	int aniId = ID_ANI_KOOPAS_IDLE;
+	int aniId = ID_ANI_CHECKFALL;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
