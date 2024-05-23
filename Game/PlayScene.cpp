@@ -125,6 +125,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BLOCK: obj = new CBlock(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_CHECKFALL: obj = new CCheckFall(x, y); break;
+	case OBJECT_TYPE_MAP: obj = new CMap(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

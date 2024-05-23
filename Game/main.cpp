@@ -21,6 +21,7 @@
 #include "Block.h"
 #include "Koopas.h"
 #include "CheckFall.h"
+#include "Map.h"
 
 #include "SampleKeyEventHandler.h"
 

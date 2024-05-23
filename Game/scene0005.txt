@@ -10,11 +10,15 @@ luckybrick.txt
 block.txt
 koopas.txt
 checkfall.txt
+map.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
+
+#Map
+11	1408	70
 
 # MARIO
 0	20	10
@@ -29,10 +33,10 @@ checkfall.txt
 1	-10	80
 
 #Goomba
-#2	100	100
+#2	140	100
 
 #Koopas
-3	200	20
+#3	200	20
 
 #Mushroom
 
@@ -42,12 +46,14 @@ checkfall.txt
 #7	20	100
 
 #LuckyBrickCoin
-8	20	160
+#8	20	160
 
 #Block
 #9	160	160
 
+
+
 #Platform
-5 	80	180	16	15	10	20001	20001	20001
+5 	0	180	16	15	300	20001	20001	20001
 
 
