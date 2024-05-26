@@ -167,8 +167,8 @@ void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 		float coinX = luckyBrickCoinPosition.x;
 		float coinY = luckyBrickCoinPosition.y - 20;
 
-		CCoin* coin = new CCoin(coinX, coinX);
-		coin->SetPosition(coinX, coinX);
+		CCoin* coin = new CCoin(coinX, coinY);
+		coin->SetPosition(coinX, coinY);
 
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene)
