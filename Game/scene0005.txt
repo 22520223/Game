@@ -37,7 +37,7 @@ map.txt
 1	-10	80
 
 #Goomba
-2	140	100
+#2	140	100
 
 #Koopas
 3	300	20
@@ -48,6 +48,7 @@ map.txt
 #LuckyBrick	
 7	248	69
 7	663	149
+7	40	160
 
 #LuckyBrickCoin
 8	183	117

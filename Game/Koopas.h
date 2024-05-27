@@ -45,6 +45,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e);
 
 public:
 	CKoopas(float x, float y);

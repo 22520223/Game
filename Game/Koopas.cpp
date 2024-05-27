@@ -1,6 +1,7 @@
 #include "Koopas.h"
 #include "CheckFall.h"
 #include "PlayScene.h"
+#include "LuckyBrick.h"
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -83,6 +84,8 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+	if (dynamic_cast<CLuckyBrick*>(e->obj))
+		OnCollisionWithLuckyBrick(e);
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -152,5 +155,29 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_KICK_RIGHT:
 		vx = -KOOPAS_IDLE_SPEED;
 		break;
+	}
+}
+
+void CKoopas::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
+{
+	CLuckyBrick* luckybrick = dynamic_cast<CLuckyBrick*>(e->obj);
+	if (GetState() == KOOPAS_STATE_KICK_LEFT || GetState() == KOOPAS_STATE_KICK_RIGHT)
+	{
+		if (e->nx != 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
+		{
+			luckybrick->SetState(LUCKYBRICK_STATE5);
+			D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
+			float mushroomX = luckyBrickPosition.x;
+			float mushroomY = luckyBrickPosition.y - 20;
+
+			CMushroom* mushroom = new CMushroom(mushroomX, mushroomY);
+			mushroom->SetPosition(mushroomX, mushroomY);
+
+			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+			if (playScene)
+			{
+				playScene->AddObject(mushroom);
+			}
+		}
 	}
 }
