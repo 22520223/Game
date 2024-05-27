@@ -26,13 +26,13 @@ void CCheckFall::OnNoCollision(DWORD dt)
 
 void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->ny != 0)
 	{
 		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
 	}
-	else
-		SetState(CHECKFALL_STATE_FALL);
+	else if (e->nx != 0 && e->obj->IsBlocking())
+		SetState(CHECKFALL_STATE_VX);
 }
 
 void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -51,7 +51,16 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 	}
-	if (GetState() == CHECKFALL_STATE_FALL && koopas->GetState() == KOOPAS_STATE_WALKING_LEFT)
+	D3DXVECTOR2 checkfall = this->GetPosition();
+	D3DXVECTOR2 koopasPosition = koopas->GetPosition();
+	float dis = abs(checkfall.x - koopasPosition.x);
+
+	if (GetState() == CHECKFALL_STATE_VX && dis > 10 && koopas->GetState() != KOOPAS_STATE_IDLE)
+	{
+		this->Delete();
+		koopas->SethaveCheck(false);
+	}
+	else if (GetState() == CHECKFALL_STATE_FALL && koopas->GetState() == KOOPAS_STATE_WALKING_LEFT)
 	{
 		koopas->SetState(KOOPAS_STATE_WALKING_RIGHT);
 		this->Delete();

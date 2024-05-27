@@ -55,6 +55,6 @@ public:
 	}
 	void SethaveCheck(bool b)
 	{
-		haveCheck = b;
+		this->haveCheck = b;
 	}
 };

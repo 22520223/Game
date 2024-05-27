@@ -194,6 +194,11 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
+		D3DXVECTOR2 marioPosition = this->GetPosition();
+		float marioX = marioPosition.x;
+		D3DXVECTOR2 koopasPosition = koopas->GetPosition();
+		float koopasX = koopasPosition.x;
+		float distance = marioX - koopasX;
 		if (koopas->GetState() == KOOPAS_STATE_WALKING_LEFT || koopas->GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
 			koopas->SetState(KOOPAS_STATE_IDLE);
@@ -201,18 +206,14 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_IDLE)
 		{
-			D3DXVECTOR2 marioPosition = this->GetPosition();
-			float marioX = marioPosition.x;
-			D3DXVECTOR2 koopasPosition = koopas->GetPosition();
-			float koopasX = koopasPosition.x;
-			float distance = marioX - koopasX;
-
 			if (distance > 0)
 			{
+				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
 			}
 			else
 			{
+				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
 			}
 
@@ -220,6 +221,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
 		{
+			koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}

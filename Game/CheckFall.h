@@ -11,6 +11,7 @@
 #define CHECKFALL_STATE_FALL 110
 #define CHECKFALL_STATE_RIGHT 111
 #define CHECKFALL_STATE_LEFT 112
+#define CHECKFALL_STATE_VX 113
 #define ID_ANI_CHECKFALL 7500
 
 class CCheckFall : public CGameObject
@@ -25,7 +26,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 1; }
+	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 

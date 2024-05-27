@@ -37,7 +37,7 @@ void CKoopas::OnNoCollision(DWORD dt)
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CKoopas*>(e->obj)) return;
+	/*if (dynamic_cast<CKoopas*>(e->obj)) return;*/
 	if (!haveCheck)
 	{
 		D3DXVECTOR2 koopasPosition = this->GetPosition();
@@ -72,10 +72,9 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 		isOnPlatform = true;
 	}
-	else if (e->nx != 0 && this->GetState() != KOOPAS_STATE_KICK_LEFT && this->GetState() != KOOPAS_STATE_KICK_RIGHT)
+	else if (GetState() != KOOPAS_STATE_KICK_LEFT && GetState() != KOOPAS_STATE_KICK_RIGHT && GetState() != KOOPAS_STATE_IDLE)
 	{
-		vx = -vx;
-		if (vx > 0)
+		if (vx < 0)
 			SetState(KOOPAS_STATE_WALKING_RIGHT);
 		else
 			SetState(KOOPAS_STATE_WALKING_LEFT);
@@ -145,6 +144,7 @@ void CKoopas::SetState(int state)
 		vx = 0;
 		isKicked = true;
 		die_start = GetTickCount64();
+		haveCheck = false;
 		break;
 	case KOOPAS_STATE_KICK_LEFT:
 		vx = KOOPAS_IDLE_SPEED;
