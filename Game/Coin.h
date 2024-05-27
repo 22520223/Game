@@ -17,6 +17,9 @@
 
 class CCoin : public CGameObject {
 	float ay;
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e);
+	virtual int IsCollidable() { return 1; };
 public:
 	CCoin(float x, float y) : CGameObject(x, y) 
 	{
@@ -28,8 +31,5 @@ public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 	void SetState(int);
-	void OnNoCollision(DWORD dt)
-	{
-		y += vy * dt;
-	}
+	void OnNoCollision(DWORD dt);
 };

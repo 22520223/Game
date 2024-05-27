@@ -1,5 +1,5 @@
 #include "Coin.h"
-
+#include "LuckyBrickCoin.h"
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -34,4 +34,22 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	/*CGameObject::Update(dt, coObjects);*/
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CCoin::OnNoCollision(DWORD dt)
+{
+	y += vy * dt;
+}
+
+void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
+		OnCollisionWithLuckyBrickCoin(e);
+}
+
+void CCoin::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
+{
+	CLuckyBrickCoin* luckybrickcoin = dynamic_cast<CLuckyBrickCoin*>(e->obj);
+	if (e->ny < 0)
+		this->Delete();
 }
