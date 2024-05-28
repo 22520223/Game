@@ -66,8 +66,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLuckyBrick(e);
 	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
 		OnCollisionWithLuckyBrickCoin(e);
-	else if (dynamic_cast<CLuckyBrickCoin*>(e->obj))
-		OnCollisionWithBlock(e);
+	//else if (dynamic_cast<CBlock*>(e->obj))
+	//	OnCollisionWithBlock(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
 }
@@ -180,15 +180,17 @@ void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithBlock(LPCOLLISIONEVENT e)
-{
-	CBlock* block = dynamic_cast<CBlock*>(e->obj);
-
-	if (e->ny < 0)
-	{
-		
-	}
-}
+//void CMario::OnCollisionWithBlock(LPCOLLISIONEVENT e)
+//{
+//	CBlock* block = dynamic_cast<CBlock*>(e->obj);
+//
+//	if (e->ny < 0)
+//	{
+//		
+//		vy = 0;
+//		isOnPlatform = true;
+//	}
+//}
 
 void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {

@@ -6,9 +6,9 @@
 
 #define ID_ANI_BLOCK 5500
 
-#define	BLOCK_WIDTH 26
-#define BLOCK_BBOX_WIDTH 26
-#define BLOCK_BBOX_HEIGHT 26
+#define	BLOCK_WIDTH 47
+#define BLOCK_BBOX_WIDTH 47
+#define BLOCK_BBOX_HEIGHT 47
 
 class CBlock : public CGameObject {
 public:
@@ -16,9 +16,9 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() { return 0; }
 	D3DXVECTOR2 GetPosition()
 	{
 		return D3DXVECTOR2(x, y);
 	}
+	int IsDirectionColliable(float nx, float ny);
 };
