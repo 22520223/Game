@@ -17,8 +17,9 @@
 
 #define GOOMBAFLY_STATE_WALKING_LEFT 700
 #define GOOMBAFLY_STATE_FLY 701
-#define GOOMBAFLY_STATE_WALK 702
+#define GOOMBAFLY_STATE_WALK_LEFT 702
 #define GOOMBAFLY_STATE_WALKING_RIGHT 703
+#define GOOMBAFLY_STATE_WALK_RIGHT 704
 #define GOOMBAFLY_STATE_DIE 800
 #define GOOMBAFLY_STATE_DEFLECT 801
 
@@ -47,4 +48,8 @@ protected:
 public:
 	CGoombafly(float x, float y);
 	virtual void SetState(int state);
+	float GetVx()
+	{
+		return vx;
+	}
 };

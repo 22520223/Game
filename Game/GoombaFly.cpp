@@ -18,12 +18,19 @@ void CGoombafly::GetBoundingBox(float& left, float& top, float& right, float& bo
 		right = left + GOOMBAFLY_BBOX_WIDTH;
 		bottom = top + GOOMBAFLY_BBOX_HEIGHT_DIE;
 	}
-	else if (state == GOOMBAFLY_STATE_WALKING_LEFT || state == GOOMBAFLY_STATE_WALK || state == GOOMBAFLY_STATE_WALKING_RIGHT)
+	else if (state == GOOMBAFLY_STATE_WALKING_LEFT || state == GOOMBAFLY_STATE_WALKING_RIGHT)
 	{
 		left = x - GOOMBAFLY_BBOX_WIDTH / 2;
 		top = y - GOOMBAFLY_BBOX_HEIGHT / 2;
 		right = left + GOOMBAFLY_BBOX_WIDTH;
 		bottom = top + GOOMBAFLY_BBOX_HEIGHT;
+	}
+	else if (state == GOOMBAFLY_STATE_WALK_LEFT || state == GOOMBAFLY_STATE_WALK_RIGHT)
+	{
+		left = x - GOOMBA_BBOX_WIDTH / 2;
+		top = y - GOOMBA_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_BBOX_WIDTH;
+		bottom = top + GOOMBA_BBOX_HEIGHT;
 	}
 	else
 	{
@@ -96,6 +103,8 @@ void CGoombafly::Render()
 	}
 	else if (state == GOOMBAFLY_STATE_FLY)
 		aniId = ID_ANI_GOOMBAFLY_FLY;
+	else if (state == GOOMBAFLY_STATE_WALK_LEFT || state == GOOMBAFLY_STATE_WALK_RIGHT)
+		aniId = ID_ANI_GOOMBA_WALKING;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
@@ -121,8 +130,11 @@ void CGoombafly::SetState(int state)
 		die_start = GetTickCount64();
 		vx = GOOMBAFLY_WALKING_SPEED;
 		break;
-	case GOOMBAFLY_STATE_WALK:
+	case GOOMBAFLY_STATE_WALK_LEFT:
 		vx = -GOOMBAFLY_WALKING_SPEED;
+		break;
+	case GOOMBAFLY_STATE_WALK_RIGHT:
+		vx = GOOMBAFLY_WALKING_SPEED;
 		break;
 	case GOOMBAFLY_STATE_DEFLECT:
 		vy = -GOOMBAFLY_DEFLECT_SPEED;

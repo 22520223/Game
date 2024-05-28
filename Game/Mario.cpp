@@ -13,6 +13,7 @@
 #include "Block.h"
 #include "Koopas.h"
 #include "PlayScene.h"
+#include "GoombaFly.h"
 
 #include "Collision.h"
 
@@ -70,6 +71,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	//	OnCollisionWithBlock(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	if (dynamic_cast<CGoombafly*>(e->obj))
+		OnCollisionWithGoombaFly(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -176,6 +179,50 @@ void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 		if (playScene)
 		{
 			playScene->AddObject(coin);
+		}
+	}
+}
+
+void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
+{
+	CGoombafly* goombafly = dynamic_cast<CGoombafly*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+	if (e->ny < 0)
+	{
+		if (goombafly->GetState() == GOOMBAFLY_STATE_WALKING_LEFT ||
+			goombafly->GetState() == GOOMBAFLY_STATE_WALKING_RIGHT ||
+			goombafly->GetState() == GOOMBAFLY_STATE_FLY)
+		{
+			if (goombafly->GetVx() < 0)
+				goombafly->SetState(GOOMBAFLY_STATE_WALK_LEFT);
+			else 
+				goombafly->SetState(GOOMBAFLY_STATE_WALK_RIGHT);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (goombafly->GetState() == GOOMBAFLY_STATE_WALK_LEFT || goombafly->GetState() == GOOMBAFLY_STATE_WALK_RIGHT)
+		{
+			goombafly->SetState(GOOMBAFLY_STATE_DIE);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by Goomba
+	{
+		if (untouchable == 0 && goombafly->GetState() != GOOMBA_STATE_DEFLECT)
+		{
+			if (goombafly->GetState() != GOOMBA_STATE_DIE)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
 		}
 	}
 }
