@@ -3,18 +3,22 @@
 #include "Mario.h"
 #include "Goomba.h"
 
-#define GOOMBAFLY_GRAVITY 0.002f
+#define GOOMBAFLY_GRAVITY 0.001f
 #define GOOMBAFLY_WALKING_SPEED 0.05f
-#define GOOMBAFLY_DEFLECT_SPEED 0.4f
+#define GOOMBAFLY_DEFLECT_SPEED 0.3f
 
 
-#define GOOMBAFLY_BBOX_WIDTH 16
-#define GOOMBAFLY_BBOX_HEIGHT 14
+#define GOOMBAFLY_BBOX_WIDTH 19
+#define GOOMBAFLY_BBOX_HEIGHT 18
+#define GOOMBAFLY_BBOX_FLY_HEIGHT 23
 #define GOOMBAFLY_BBOX_HEIGHT_DIE 7
 
 #define GOOMBAFLY_DIE_TIMEOUT 500
 
-#define GOOMBAFLY_STATE_WALKING 700
+#define GOOMBAFLY_STATE_WALKING_LEFT 700
+#define GOOMBAFLY_STATE_FLY 701
+#define GOOMBAFLY_STATE_WALK 702
+#define GOOMBAFLY_STATE_WALKING_RIGHT 703
 #define GOOMBAFLY_STATE_DIE 800
 #define GOOMBAFLY_STATE_DEFLECT 801
 
@@ -28,6 +32,7 @@ protected:
 	float ay;
 
 	ULONGLONG die_start;
+	BOOLEAN isOnPlatform = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
