@@ -33,6 +33,8 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
+#define MARIO_STATE_HOLD			602
+
 
 #pragma region ANIMATION_ID
 
@@ -164,4 +166,5 @@ public:
 	{
 		return D3DXVECTOR2(x, y);
 	}
+	bool isJKeyDown = false;
 };

@@ -115,7 +115,7 @@ void CKoopas::Render()
 	{
 		aniId = ID_ANI_KOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_IDLE)
+	else if (state == KOOPAS_STATE_IDLE || state == KOOPAS_STATE_HOLD)
 	{
 		aniId = ID_ANI_KOOPAS_IDLE;
 	}
@@ -139,21 +139,29 @@ void CKoopas::SetState(int state)
 	{
 	case KOOPAS_STATE_WALKING_LEFT:
 		vx = -KOOPAS_WALKING_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_WALKING_RIGHT:
 		vx = KOOPAS_WALKING_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_IDLE:
 		vx = 0;
+		ay = KOOPAS_GRAVITY;
 		isKicked = true;
 		die_start = GetTickCount64();
 		haveCheck = false;
 		break;
 	case KOOPAS_STATE_KICK_LEFT:
 		vx = KOOPAS_IDLE_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_KICK_RIGHT:
 		vx = -KOOPAS_IDLE_SPEED;
+		ay = KOOPAS_GRAVITY;
+		break;
+	case KOOPAS_STATE_HOLD:
+		ay = 0;
 		break;
 	}
 }

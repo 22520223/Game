@@ -38,10 +38,10 @@ goombafly.txt
 1	-10	80
 
 #Goombafly
-12	140	100
+#12	140	100
 
 #Koopas
-#3	100	100
+3	100	100
 
 #Mushroom
 

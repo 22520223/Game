@@ -16,6 +16,7 @@
 #include "GoombaFly.h"
 
 #include "Collision.h"
+//#include "SampleKeyEventHandler.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -23,7 +24,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	CKoopas* koopas = nullptr;
 
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<CKoopas*>(obj))
+		{
+			koopas = dynamic_cast<CKoopas*>(obj);
+			break;
+		}
+	}
+	D3DXVECTOR2 marioPosition = this->GetPosition();
+
+	if (koopas->GetState() == KOOPAS_STATE_HOLD)
+	{
+		koopas->SetPosition(marioPosition.x, marioPosition.y - 5);
+		if (!isJKeyDown)
+		{
+			koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
+		}
+	}
+	
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -242,13 +264,12 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
-
+	D3DXVECTOR2 marioPosition = this->GetPosition();
+	float marioX = marioPosition.x;
+	D3DXVECTOR2 koopasPosition = koopas->GetPosition();
+	float koopasX = koopasPosition.x;
 	if (e->ny < 0)
 	{
-		D3DXVECTOR2 marioPosition = this->GetPosition();
-		float marioX = marioPosition.x;
-		D3DXVECTOR2 koopasPosition = koopas->GetPosition();
-		float koopasX = koopasPosition.x;
 		float distance = marioX - koopasX;
 		if (koopas->GetState() == KOOPAS_STATE_WALKING_LEFT || koopas->GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
@@ -281,12 +302,19 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() == KOOPAS_STATE_IDLE)
+			if (koopas->GetState() == KOOPAS_STATE_IDLE || koopas->GetState() == KOOPAS_STATE_HOLD)
 			{
-
-				if (e->nx < 0)
+				if (isJKeyDown && e->nx < 0)
+				{
+					koopas->SetState(KOOPAS_STATE_HOLD);
+				}
+				else if (isJKeyDown && e->nx > 0)
+				{
+					koopas->SetState(KOOPAS_STATE_HOLD);
+				}
+				else if (e->nx < 0 && !isJKeyDown)
 					koopas->SetState(KOOPAS_STATE_KICK_LEFT);
-				else
+				else if (e->nx > 0 && !isJKeyDown)
 					koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
 			}
 			else
@@ -565,4 +593,3 @@ void CMario::SetLevel(int l)
 	}
 	level = l;
 }
-
