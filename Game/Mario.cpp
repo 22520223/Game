@@ -39,11 +39,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (koopas->GetState() == KOOPAS_STATE_HOLD)
 	{
-		koopas->SetPosition(marioPosition.x, marioPosition.y - 5);
-		if (!isJKeyDown)
-		{
+		if (nx > 0)
+			koopas->SetPosition(marioPosition.x + 13, marioPosition.y - 2);
+		else
+			koopas->SetPosition(marioPosition.x - 13, marioPosition.y - 2);
+		if (!isJKeyDown && nx <= 0)
 			koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
-		}
+		else if (!isJKeyDown && nx > 0)
+			koopas->SetState(KOOPAS_STATE_KICK_LEFT);
 	}
 	
 	// reset untouchable timer if untouchable time has passed
@@ -302,13 +305,9 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() == KOOPAS_STATE_IDLE || koopas->GetState() == KOOPAS_STATE_HOLD)
+			if (koopas->GetState() == KOOPAS_STATE_IDLE)
 			{
-				if (isJKeyDown && e->nx < 0)
-				{
-					koopas->SetState(KOOPAS_STATE_HOLD);
-				}
-				else if (isJKeyDown && e->nx > 0)
+				if (isJKeyDown)
 				{
 					koopas->SetState(KOOPAS_STATE_HOLD);
 				}
