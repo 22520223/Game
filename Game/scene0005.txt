@@ -11,6 +11,7 @@ block.txt
 koopas.txt
 checkfall.txt
 map.txt
+goombafly.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -37,7 +38,7 @@ map.txt
 1	-10	80
 
 #Goomba
-2	140	100
+12	140	100
 
 #Koopas
 3	100	100

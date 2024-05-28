@@ -13,7 +13,7 @@
 #include "Koopas.h"
 #include "CheckFall.h"
 #include "Map.h"
-
+#include "GoombaFly.h"
 
 class CPlayScene : public CScene
 {
