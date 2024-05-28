@@ -87,7 +87,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 	else // hit by Goomba
 	{
-		if (untouchable == 0)
+		if (untouchable == 0 && goomba->GetState() != GOOMBA_STATE_DEFLECT)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{

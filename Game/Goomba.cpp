@@ -93,6 +93,9 @@ void CGoomba::SetState(int state)
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;
 		break;
+	case GOOMBA_STATE_DEFLECT:
+		vy = -GOOMBA_DEFLECT_SPEED;
+		break;
 	}
 }
 
@@ -101,6 +104,6 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 	if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
 	{
-		SetState(GOOMBA_STATE_DIE);
+		SetState(GOOMBA_STATE_DEFLECT);
 	}
 }
