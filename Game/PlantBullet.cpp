@@ -54,23 +54,37 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
 	
 	float disPy = marioPosition.y - plantPosition.y;
-	if (disPy > 20)
+	float disPx = marioPosition.x - plantPosition.x;
+	if (disPy > 20 && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_BOT_LEFT);
 	}
-	else if (disPy < -20)
+	else if (disPy < -20 && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_TOP_LEFT);
 	}
-	else
+	else if ((disPy >= -20 || disPy <= 20) && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_MID_LEFT);
+	}
+	else if (disPy > 20 && disPx > 0)
+	{
+		SetState(PLANTBULLET_STATE_BOT_RIGHT);
+	}
+	else if (disPy < -20 && disPx > 0)
+	{
+		SetState(PLANTBULLET_STATE_TOP_RIGHT);
+	}
+	else
+	{
+		SetState(PLANTBULLET_STATE_MID_RIGHT);
 	}
 	if (shoot_time == -1)
 		StartShoot();
 	else if (GetTickCount64() - shoot_time > 5000)
 	{
 		LPGAMEOBJECT fire = new CFire(plantPosition.x, plantPosition.y);
+		fire->SetState(FIRE_STATE_BOT_LEFT);
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene != nullptr)
 		{
@@ -91,6 +105,14 @@ void CPlantBullet::Render()
 	if (state == PLANTBULLET_STATE_BOT_LEFT)
 	{
 		aniId = ID_ANI_PLANTBULLET_BOT_LEFT;
+	}
+	else if (state == PLANTBULLET_STATE_TOP_RIGHT || state == PLANTBULLET_STATE_MID_RIGHT)
+	{
+		aniId = ID_ANI_PLANTBULLET_TOP_RIGHT;
+	}
+	else if (state == PLANTBULLET_STATE_BOT_RIGHT)
+	{
+		aniId = ID_ANI_PLANTBULLET_BOT_RIGHT;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
