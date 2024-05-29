@@ -13,6 +13,7 @@ checkfall.txt
 map.txt
 goombafly.txt
 leaf.txt
+plantbullet.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -78,6 +79,9 @@ leaf.txt
 
 #Leaf
 13	100	40
+
+#PlantBullet
+14	100	20
 
 
 

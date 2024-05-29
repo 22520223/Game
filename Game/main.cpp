@@ -23,6 +23,7 @@
 #include "CheckFall.h"
 #include "Map.h"
 #include "Leaf.h"
+#include "PlantBullet.h"
 
 #include "SampleKeyEventHandler.h"
 
