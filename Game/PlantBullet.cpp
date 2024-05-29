@@ -39,14 +39,8 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy = ay * dt;
 
 	D3DXVECTOR2 plantPosition = this->GetPosition();
-
-	if (isOnPlatform)
-		SetState(PLANTBULLET_STATE_UP_LEFT);
-	else if (plantPosition.y < 109 && GetState() != PLANTBULLET_STATE_DOWN_LEFT)
-		SetState(PLANTBULLET_STATE_SHOOT);
-
 	CMario* mario = nullptr;
-	
+
 	for (size_t i = 0; i < coObjects->size(); i++)
 	{
 		LPGAMEOBJECT obj = coObjects->at(i);
@@ -56,9 +50,16 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 	}
-	
+
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
-	
+
+	if (isOnPlatform && plantPosition.x > marioPosition.x)
+		SetState(PLANTBULLET_STATE_UP_LEFT);
+	else if (isOnPlatform && plantPosition.x < marioPosition.x)
+		SetState(PLANTBULLET_STATE_UP_RIGHT);
+	else if (plantPosition.y < 109 && GetState() != PLANTBULLET_STATE_DOWN_LEFT && GetState() != PLANTBULLET_STATE_DOWN_RIGHT)
+		SetState(PLANTBULLET_STATE_SHOOT);
+
 	float disPy = marioPosition.y - plantPosition.y;
 	float disPx = marioPosition.x - plantPosition.x;
 	if (disPy > 40 && disPx < 0)
@@ -90,6 +91,8 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		StartShoot();
 		if(disPx < 0 && !isShoot)
 			SetState(PLANTBULLET_STATE_DOWN_LEFT);
+		else if (disPx > 0 && !isShoot)
+			SetState(PLANTBULLET_STATE_DOWN_RIGHT);
 	}
 	else if (GetTickCount64() - shoot_time > 7000)
 	{
@@ -111,7 +114,10 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			playScene->AddObject(fire);
 		}
-		SetState(PLANTBULLET_STATE_DOWN_LEFT);
+		if (disPx < 0)
+			SetState(PLANTBULLET_STATE_DOWN_LEFT);
+		else
+			SetState(PLANTBULLET_STATE_DOWN_RIGHT);
 		shoot_time = -1;
 		isShoot = false;
 	}
@@ -147,7 +153,7 @@ void CPlantBullet::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CPlantBullet::SetState(int state)
@@ -169,6 +175,14 @@ void CPlantBullet::SetState(int state)
 	case PLANTBULLET_STATE_SHOOT:
 		ay = 0;
 		isShoot = true;
+		break;
+	case PLANTBULLET_STATE_UP_RIGHT:
+		ay = -PLANTBULLET_GRAVITY;
+		isOnPlatform = false;
+		break;
+	case PLANTBULLET_STATE_DOWN_RIGHT:
+		ay = PLANTBULLET_GRAVITY;
+		isShoot = false;
 		break;
 	}
 }
