@@ -19,13 +19,13 @@ protected:
 	float ax;
 	float ay;
 	ULONGLONG fall_start;
-	bool isOnPlatform = false;
+	bool isCollidable = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return !isCollidable; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 

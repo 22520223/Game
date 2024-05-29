@@ -30,10 +30,7 @@ void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
+		isCollidable = true;
 	}
 }
 
