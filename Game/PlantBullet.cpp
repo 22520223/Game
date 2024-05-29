@@ -55,23 +55,23 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	float disPy = marioPosition.y - plantPosition.y;
 	float disPx = marioPosition.x - plantPosition.x;
-	if (disPy > 20 && disPx < 0)
+	if (disPy > 40 && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_BOT_LEFT);
 	}
-	else if (disPy < -20 && disPx < 0)
+	else if (disPy < -40 && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_TOP_LEFT);
 	}
-	else if ((disPy >= -20 || disPy <= 20) && disPx < 0)
+	else if ((disPy >= -40 || disPy <= 40) && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_MID_LEFT);
 	}
-	else if (disPy > 20 && disPx > 0)
+	else if (disPy > 40 && disPx > 0)
 	{
 		SetState(PLANTBULLET_STATE_BOT_RIGHT);
 	}
-	else if (disPy < -20 && disPx > 0)
+	else if (disPy < -40 && disPx > 0)
 	{
 		SetState(PLANTBULLET_STATE_TOP_RIGHT);
 	}
@@ -84,7 +84,18 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else if (GetTickCount64() - shoot_time > 5000)
 	{
 		LPGAMEOBJECT fire = new CFire(plantPosition.x, plantPosition.y);
-		fire->SetState(FIRE_STATE_BOT_LEFT);
+		if (state == PLANTBULLET_STATE_BOT_LEFT)
+			fire->SetState(FIRE_STATE_BOT_LEFT);
+		else if (state == PLANTBULLET_STATE_TOP_LEFT)
+			fire->SetState(FIRE_STATE_TOP_LEFT);
+		else if (state == PLANTBULLET_STATE_MID_LEFT)
+			fire->SetState(FIRE_STATE_MID_LEFT);
+		else if (state == PLANTBULLET_STATE_BOT_RIGHT)
+			fire->SetState(FIRE_STATE_BOT_RIGHT);
+		else if (state == PLANTBULLET_STATE_TOP_RIGHT)
+			fire->SetState(FIRE_STATE_TOP_RIGHT);
+		else
+			fire->SetState(FIRE_STATE_MID_RIGHT);
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene != nullptr)
 		{
