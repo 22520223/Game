@@ -22,6 +22,7 @@
 #include "Koopas.h"
 #include "CheckFall.h"
 #include "Map.h"
+#include "Leaf.h"
 
 #include "SampleKeyEventHandler.h"
 

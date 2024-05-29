@@ -127,6 +127,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CHECKFALL: obj = new CCheckFall(x, y); break;
 	case OBJECT_TYPE_MAP: obj = new CMap(x, y); break;
 	case OBJECT_TYPE_GOOMBAFLY: obj = new CGoombafly(x, y); break;
+	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

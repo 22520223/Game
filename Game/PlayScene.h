@@ -14,6 +14,7 @@
 #include "CheckFall.h"
 #include "Map.h"
 #include "GoombaFly.h"
+#include "Leaf.h"
 
 class CPlayScene : public CScene
 {
