@@ -7,7 +7,7 @@ CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {
 	this->ay = 0;
 	shoot_time = -1;
-	SetState(PLANTBULLET_STATE_TOP_LEFT);
+	SetState(PLANTBULLET_STATE_DOWN_LEFT);
 }
 
 void CPlantBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -23,21 +23,27 @@ void CPlantBullet::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
-//void CPlantBullet::OnCollisionWith(LPCOLLISIONEVENT e)
-//{
-//	if (!e->obj->IsBlocking()) return;
-//	if (dynamic_cast<CPlantBullet*>(e->obj)) return;
-//
-//	if (e->ny != 0)
-//	{
-//		vy = 0;
-//		isCollidable = true;
-//	}
-//}
+void CPlantBullet::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (!e->obj->IsBlocking()) return;
+	if (dynamic_cast<CPlantBullet*>(e->obj)) return;
+
+	if (e->ny < 0)
+	{
+		isOnPlatform = true;
+	}
+}
 
 void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy = ay * dt;
+
+	D3DXVECTOR2 plantPosition = this->GetPosition();
+
+	if (isOnPlatform)
+		SetState(PLANTBULLET_STATE_UP_LEFT);
+	else if (plantPosition.y < 109 && GetState() != PLANTBULLET_STATE_DOWN_LEFT)
+		SetState(PLANTBULLET_STATE_SHOOT);
 
 	CMario* mario = nullptr;
 	
@@ -50,7 +56,7 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 	}
-	D3DXVECTOR2 plantPosition = this->GetPosition();
+	
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
 	
 	float disPy = marioPosition.y - plantPosition.y;
@@ -75,13 +81,17 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(PLANTBULLET_STATE_TOP_RIGHT);
 	}
-	else
+	else if ((disPy >= -40 || disPy <= 40) && disPx > 0)
 	{
 		SetState(PLANTBULLET_STATE_MID_RIGHT);
 	}
 	if (shoot_time == -1)
+	{
 		StartShoot();
-	else if (GetTickCount64() - shoot_time > 5000)
+		if(disPx < 0 && !isShoot)
+			SetState(PLANTBULLET_STATE_DOWN_LEFT);
+	}
+	else if (GetTickCount64() - shoot_time > 7000)
 	{
 		LPGAMEOBJECT fire = new CFire(plantPosition.x, plantPosition.y);
 		if (state == PLANTBULLET_STATE_BOT_LEFT)
@@ -101,7 +111,9 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			playScene->AddObject(fire);
 		}
+		SetState(PLANTBULLET_STATE_DOWN_LEFT);
 		shoot_time = -1;
+		isShoot = false;
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -125,6 +137,14 @@ void CPlantBullet::Render()
 	{
 		aniId = ID_ANI_PLANTBULLET_BOT_RIGHT;
 	}
+	else if (state == PLANTBULLET_STATE_UP_LEFT || state == PLANTBULLET_STATE_DOWN_LEFT)
+	{
+		aniId = ID_ANI_PLANTBULLET_UP_LEFT;
+	}
+	else if (state == PLANTBULLET_STATE_UP_RIGHT || state == PLANTBULLET_STATE_DOWN_RIGHT)
+	{
+		aniId = ID_ANI_PLANTBULLET_UP_RIGHT;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -137,6 +157,18 @@ void CPlantBullet::SetState(int state)
 	{
 	case PLANTBULLET_STATE_DIE:
 		this->Delete();
+		break;
+	case PLANTBULLET_STATE_UP_LEFT:
+		ay = -PLANTBULLET_GRAVITY;
+		isOnPlatform = false;
+		break;
+	case PLANTBULLET_STATE_DOWN_LEFT:
+		ay = PLANTBULLET_GRAVITY;
+		isShoot = false;
+		break;
+	case PLANTBULLET_STATE_SHOOT:
+		ay = 0;
+		isShoot = true;
 		break;
 	}
 }
