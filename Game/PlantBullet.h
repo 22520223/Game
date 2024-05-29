@@ -9,7 +9,7 @@
 
 
 #define PLANTBULLET_STATE_TOP 1234
-//#define PLANTBULLET_STATE_MID 1235
+#define PLANTBULLET_STATE_MID 1235
 #define PLANTBULLET_STATE_BOT 1236
 #define PLANTBULLET_STATE_DIE 1240
 
@@ -33,9 +33,13 @@ protected:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
 	CPlantBullet(float x, float y);
 	virtual void SetState(int state);
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
+	}
 };

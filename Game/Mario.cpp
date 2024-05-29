@@ -37,18 +37,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 	}
-	D3DXVECTOR2 marioPosition = this->GetPosition();
-
-	if (koopas->GetState() == KOOPAS_STATE_HOLD)
+	if (koopas)
 	{
-		if (nx > 0)
-			koopas->SetPosition(marioPosition.x + 13, marioPosition.y - 2);
-		else
-			koopas->SetPosition(marioPosition.x - 13, marioPosition.y - 2);
-		if (!isJKeyDown && nx <= 0)
-			koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
-		else if (!isJKeyDown && nx > 0)
-			koopas->SetState(KOOPAS_STATE_KICK_LEFT);
+		D3DXVECTOR2 marioPosition = this->GetPosition();
+
+		if (koopas->GetState() == KOOPAS_STATE_HOLD)
+		{
+			if (nx > 0)
+				koopas->SetPosition(marioPosition.x + 13, marioPosition.y - 2);
+			else
+				koopas->SetPosition(marioPosition.x - 13, marioPosition.y - 2);
+			if (!isJKeyDown && nx <= 0)
+				koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
+			else if (!isJKeyDown && nx > 0)
+				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
+		}
 	}
 	
 	// reset untouchable timer if untouchable time has passed
