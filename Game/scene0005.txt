@@ -15,6 +15,7 @@ goombafly.txt
 leaf.txt
 plantbullet.txt
 fire.txt
+pipe.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -82,10 +83,13 @@ fire.txt
 #13	100	40
 
 #PlantBullet
-14	367	110
+14	367	111
 
 #Fire
 #15	300	100
+
+#Pipe
+16	367	148
 
 
 
