@@ -257,7 +257,12 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 		{
 			if (goombafly->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level == MARIO_LEVEL_SUPER)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level == MARIO_LEVEL_BIG)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
@@ -355,7 +360,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	CLeaf* mushroom = dynamic_cast<CLeaf*>(e->obj);
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
 
 	if (e->ny != 0 || e->nx != 0)
 	{
@@ -368,8 +373,6 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 		else if (level == MARIO_LEVEL_BIG)
 		{
 			level = MARIO_LEVEL_SUPER;
-			if (isOnPlatform)
-				vy = -0.2f;
 		}
 		e->obj->Delete();
 	}
