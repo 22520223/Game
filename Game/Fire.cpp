@@ -1,11 +1,12 @@
 #include"Fire.h"
+#include"PlantBullet.h"
 
 CFire::CFire(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->ay = FIRE_GRAVITY;
+	this->ay = 0;
 	fall_start = -1;
-	SetState(FIRE_STATE_TOP);
+	SetState(FIRE_STATE_BOT);
 }
 
 void CFire::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -27,17 +28,14 @@ void CFire::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CFire*>(e->obj)) return;
 
-	if (e->ny != 0)
-	{
-		vy = 0;
-		isCollidable = true;
-	}
+	isCollidable = true;
+	
 }
 
 void CFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy = ay * dt;
-	vx += ax * dt;
+	vx = ax * dt;
 
 
 
@@ -59,6 +57,17 @@ void CFire::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-
+	case FIRE_STATE_MID:
+		ay = 0;
+		ax = -FIRE_SPEED;
+		break;
+	case FIRE_STATE_TOP:
+		ay = -FIRE_GRAVITY;
+		ax = -FIRE_SPEED;
+		break;
+	case FIRE_STATE_BOT:
+		ay = FIRE_GRAVITY;
+		ax = -FIRE_SPEED;
+		break;
 	}
 }
