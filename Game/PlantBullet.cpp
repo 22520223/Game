@@ -1,11 +1,12 @@
 #include"PlantBullet.h"
 #include"Mario.h"
 #include"Fire.h"
+#include "PlayScene.h"
 
 CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {
 	this->ay = 0;
-	fall_start = -1;
+	shoot_time = -1;
 	SetState(PLANTBULLET_STATE_TOP_LEFT);
 }
 
@@ -65,6 +66,19 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(PLANTBULLET_STATE_MID_LEFT);
 	}
+	if (shoot_time == -1)
+		StartShoot();
+	else if (GetTickCount64() - shoot_time > 5000)
+	{
+		LPGAMEOBJECT fire = new CFire(plantPosition.x, plantPosition.y);
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene != nullptr)
+		{
+			playScene->AddObject(fire);
+		}
+		shoot_time = -1;
+	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

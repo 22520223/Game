@@ -21,7 +21,7 @@ class CPlantBullet : public CGameObject
 {
 protected:
 	float ay;
-	ULONGLONG fall_start;
+	ULONGLONG shoot_time;
 	bool isCollidable = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -41,4 +41,5 @@ public:
 	{
 		return D3DXVECTOR2(x, y);
 	}
+	void StartShoot() { shoot_time = GetTickCount64(); }
 };
