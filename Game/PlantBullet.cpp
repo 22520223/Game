@@ -7,7 +7,6 @@ CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {
 	this->ay = 0;
 	shoot_time = -1;
-	SetState(PLANTBULLET_STATE_DOWN_LEFT);
 }
 
 void CPlantBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -52,16 +51,22 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
+	float disPy = marioPosition.y - plantPosition.y;
+	float disPx = marioPosition.x - plantPosition.x;
 
-	if (isOnPlatform && plantPosition.x > marioPosition.x)
+	if (isOnPlatform && (disPx > -30 && disPx < 30))
+	{
+		ay = 0;
+		hibernate = true;
+		StartShoot();
+	}
+	else if (isOnPlatform && plantPosition.x > marioPosition.x)
 		SetState(PLANTBULLET_STATE_UP_LEFT);
 	else if (isOnPlatform && plantPosition.x < marioPosition.x)
 		SetState(PLANTBULLET_STATE_UP_RIGHT);
 	else if (plantPosition.y < 109 && GetState() != PLANTBULLET_STATE_DOWN_LEFT && GetState() != PLANTBULLET_STATE_DOWN_RIGHT)
 		SetState(PLANTBULLET_STATE_SHOOT);
 
-	float disPy = marioPosition.y - plantPosition.y;
-	float disPx = marioPosition.x - plantPosition.x;
 	if (disPy > 40 && disPx < 0)
 	{
 		SetState(PLANTBULLET_STATE_BOT_LEFT);
@@ -94,7 +99,7 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else if (disPx > 0 && !isShoot)
 			SetState(PLANTBULLET_STATE_DOWN_RIGHT);
 	}
-	else if (GetTickCount64() - shoot_time > 7000)
+	else if (GetTickCount64() - shoot_time > 6500 && !hibernate)
 	{
 		LPGAMEOBJECT fire = new CFire(plantPosition.x, plantPosition.y);
 		if (state == PLANTBULLET_STATE_BOT_LEFT)
@@ -167,6 +172,7 @@ void CPlantBullet::SetState(int state)
 	case PLANTBULLET_STATE_UP_LEFT:
 		ay = -PLANTBULLET_GRAVITY;
 		isOnPlatform = false;
+		hibernate = false;
 		break;
 	case PLANTBULLET_STATE_DOWN_LEFT:
 		ay = PLANTBULLET_GRAVITY;
@@ -175,10 +181,12 @@ void CPlantBullet::SetState(int state)
 	case PLANTBULLET_STATE_SHOOT:
 		ay = 0;
 		isShoot = true;
+		hibernate = false;
 		break;
 	case PLANTBULLET_STATE_UP_RIGHT:
 		ay = -PLANTBULLET_GRAVITY;
 		isOnPlatform = false;
+		hibernate = false;
 		break;
 	case PLANTBULLET_STATE_DOWN_RIGHT:
 		ay = PLANTBULLET_GRAVITY;
