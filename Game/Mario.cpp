@@ -303,6 +303,10 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	float koopasX = koopasPosition.x;
 	if (e->ny < 0)
 	{
+		if (level == MARIO_LEVEL_SMALL)
+			koopas->checkLevel = 1;
+		else
+			koopas->checkLevel = 0;
 		float distance = marioX - koopasX;
 		if (koopas->GetState() == KOOPAS_STATE_WALKING_LEFT || koopas->GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
@@ -337,6 +341,10 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (koopas->GetState() == KOOPAS_STATE_IDLE)
 			{
+				if (level == MARIO_LEVEL_SMALL)
+					koopas->checkLevel = 1;
+				else
+					koopas->checkLevel = 0;
 				if (isJKeyDown)
 				{
 					koopas->SetState(KOOPAS_STATE_HOLD);

@@ -175,16 +175,33 @@ void CKoopas::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 		{
 			luckybrick->SetState(LUCKYBRICK_STATE5);
 			D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
-			float mushroomX = luckyBrickPosition.x;
-			float mushroomY = luckyBrickPosition.y - 20;
-
-			CMushroom* mushroom = new CMushroom(mushroomX, mushroomY);
-			mushroom->SetPosition(mushroomX, mushroomY);
-
-			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-			if (playScene)
+			if (checkLevel)
 			{
-				playScene->AddObject(mushroom);
+				float mushroomX = luckyBrickPosition.x;
+				float mushroomY = luckyBrickPosition.y - 20;
+
+				CMushroom* mushroom = new CMushroom(mushroomX, mushroomY);
+				mushroom->SetPosition(mushroomX, mushroomY);
+
+				CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+				if (playScene)
+				{
+					playScene->AddObject(mushroom);
+				}
+			}
+			else
+			{
+				float leafX = luckyBrickPosition.x;
+				float leafY = luckyBrickPosition.y - 20;
+
+				CLeaf* leaf = new CLeaf(leafX, leafY);
+				leaf->SetPosition(leafX, leafY);
+
+				CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+				if (playScene)
+				{
+					playScene->AddObject(leaf);
+				}
 			}
 		}
 	}

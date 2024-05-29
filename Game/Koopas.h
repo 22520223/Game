@@ -59,4 +59,5 @@ public:
 	{
 		this->haveCheck = b;
 	}
+	int checkLevel;
 };
