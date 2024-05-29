@@ -24,8 +24,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	
 	CKoopas* koopas = nullptr;
 
 	for (size_t i = 0; i < coObjects->size(); i++)
@@ -53,12 +54,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
 		}
 	}
-	
+
+	if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
+	{
+		SetState(MARIO_STATE_SUPER_LEFT);
+	}
+	else if (isJKeyDownHit && nx > 0 && level == MARIO_LEVEL_SUPER)
+	{
+		SetState(MARIO_STATE_SUPER_RIGHT);
+	}
+
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+
+	if (GetTickCount64() - timeHit > 500)
+	{
+		isJKeyDownHit = false;
+		if (nx < 0)
+			SetState(MARIO_STATE_WALKING_LEFT);
+		else
+			SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 
 	isOnPlatform = false;
@@ -646,10 +665,14 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_SUPER)
 		aniId = GetAniIdSuper();
+	if (state == MARIO_STATE_SUPER_LEFT)
+		aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
+	else if (state == MARIO_STATE_SUPER_RIGHT)
+		aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	DebugOutTitle(L"Coins: %d", coin);
 }
@@ -729,8 +752,13 @@ void CMario::SetState(int state)
 		vx = 0;
 		ax = 0;
 		break;
+	case MARIO_STATE_SUPER_LEFT:
+		timeHit = GetTickCount64();
+		break;
+	case MARIO_STATE_SUPER_RIGHT:
+		timeHit = GetTickCount64();
+		break;
 	}
-
 	CGameObject::SetState(state);
 }
 

@@ -13,6 +13,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
+	case DIK_J:
+		mario->isJKeyDownHit = true;
+		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_SIT);
 		break;

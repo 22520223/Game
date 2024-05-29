@@ -34,6 +34,8 @@
 #define MARIO_STATE_SIT_RELEASE		601
 
 #define MARIO_STATE_HOLD			602
+#define MARIO_STATE_SUPER_LEFT		603
+#define MARIO_STATE_SUPER_RIGHT		604
 
 
 #pragma region ANIMATION_ID
@@ -102,6 +104,9 @@
 #define ID_ANI_MARIO_SUPER_SIT_RIGHT 2200
 #define ID_ANI_MARIO_SUPER_SIT_LEFT 2201
 
+#define ID_ANI_MARIO_SUPER_HIT_LEFT 2401
+#define ID_ANI_MARIO_SUPER_HIT_RIGHT 2400
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -111,7 +116,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
-#define	MARIO_LEVEL_SUPER		3
+#define	MARIO_LEVEL_SUPER	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -138,6 +143,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin;
+	ULONGLONG timeHit;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -167,6 +173,7 @@ public:
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
 		untouchable_start = -1;
+		timeHit = 0;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -194,4 +201,5 @@ public:
 		return D3DXVECTOR2(x, y);
 	}
 	bool isJKeyDown = false;
+	bool isJKeyDownHit = false;
 };
