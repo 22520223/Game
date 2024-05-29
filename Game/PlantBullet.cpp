@@ -1,5 +1,4 @@
 #include"PlantBullet.h"
-#include"Koopas.h"
 
 CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {

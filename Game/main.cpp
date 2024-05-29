@@ -24,6 +24,7 @@
 #include "Map.h"
 #include "Leaf.h"
 #include "PlantBullet.h"
+#include "Fire.h"
 
 #include "SampleKeyEventHandler.h"
 

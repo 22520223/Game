@@ -16,6 +16,7 @@
 #include "GoombaFly.h"
 #include "Leaf.h"
 #include "PlantBullet.h"
+#include "Fire.h"
 
 class CPlayScene : public CScene
 {

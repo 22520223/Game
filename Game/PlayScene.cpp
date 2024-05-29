@@ -129,6 +129,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBAFLY: obj = new CGoombafly(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_PLANTBULLET: obj = new CPlantBullet(x, y); break;
+	case OBJECT_TYPE_FIRE: obj = new CFire(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{
