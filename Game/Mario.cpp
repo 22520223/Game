@@ -649,7 +649,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	DebugOutTitle(L"Coins: %d", coin);
 }
@@ -736,7 +736,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_SUPER)
+	if (level == MARIO_LEVEL_BIG)
 	{
 		if (isSitting)
 		{
@@ -751,6 +751,33 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		}
+	}
+	else if (level == MARIO_LEVEL_SUPER)
+	{
+		if (isSitting)
+		{
+			left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			if (nx < 0)
+			{
+				left = x - MARIO_BIG_BBOX_WIDTH / 2 - 3;
+				top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+				bottom = top + MARIO_BIG_BBOX_HEIGHT;
+			}
+			else
+			{
+				left = x - MARIO_BIG_BBOX_WIDTH / 2 + 3;
+				top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+				bottom = top + MARIO_BIG_BBOX_HEIGHT;
+			}
 		}
 	}
 	else

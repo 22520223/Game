@@ -1,12 +1,12 @@
 #include"PlantBullet.h"
 #include"Mario.h"
+#include"Fire.h"
 
 CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {
-	this->ax = 0;
 	this->ay = 0;
 	fall_start = -1;
-	SetState(PLANTBULLET_STATE_TOP);
+	SetState(PLANTBULLET_STATE_TOP_LEFT);
 }
 
 void CPlantBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -37,10 +37,9 @@ void CPlantBullet::OnNoCollision(DWORD dt)
 void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy = ay * dt;
-	vx += ax * dt;
 
 	CMario* mario = nullptr;
-
+	
 	for (size_t i = 0; i < coObjects->size(); i++)
 	{
 		LPGAMEOBJECT obj = coObjects->at(i);
@@ -52,18 +51,19 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	D3DXVECTOR2 plantPosition = this->GetPosition();
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
-	float dis = marioPosition.y - plantPosition.y;
-	if (dis > 20)
+	
+	float disPy = marioPosition.y - plantPosition.y;
+	if (disPy > 20)
 	{
-		SetState(PLANTBULLET_STATE_BOT);
+		SetState(PLANTBULLET_STATE_BOT_LEFT);
 	}
-	else if (dis < -20)
+	else if (disPy < -20)
 	{
-		SetState(PLANTBULLET_STATE_TOP);
+		SetState(PLANTBULLET_STATE_TOP_LEFT);
 	}
 	else
 	{
-		SetState(PLANTBULLET_STATE_MID);
+		SetState(PLANTBULLET_STATE_MID_LEFT);
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -72,11 +72,11 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPlantBullet::Render()
 {
-	int aniId = ID_ANI_PLANTBULLET_TOP;
+	int aniId = ID_ANI_PLANTBULLET_TOP_LEFT;
 
-	if (state == PLANTBULLET_STATE_BOT)
+	if (state == PLANTBULLET_STATE_BOT_LEFT)
 	{
-		aniId = ID_ANI_PLANTBULLET_BOT;
+		aniId = ID_ANI_PLANTBULLET_BOT_LEFT;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);

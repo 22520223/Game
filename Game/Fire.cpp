@@ -23,14 +23,13 @@ void CFire::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
-void CFire::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CFire*>(e->obj)) return;
-
-	isCollidable = true;
-	
-}
+//void CFire::OnCollisionWith(LPCOLLISIONEVENT e)
+//{
+//	if (!e->obj->IsBlocking()) return;
+//	if (dynamic_cast<CFire*>(e->obj)) return;
+//
+//	
+//}
 
 void CFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
