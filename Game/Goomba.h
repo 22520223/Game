@@ -27,6 +27,7 @@ protected:
 	float ay;
 
 	ULONGLONG die_start;
+	bool isSpawn = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -41,4 +42,8 @@ protected:
 public:
 	CGoomba(float x, float y);
 	virtual void SetState(int state);
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
+	}
 };

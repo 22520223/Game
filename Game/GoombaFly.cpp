@@ -6,7 +6,7 @@ CGoombafly::CGoombafly(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = GOOMBAFLY_GRAVITY;
 	die_start = -1;
-	SetState(GOOMBAFLY_STATE_WALKING_LEFT);
+	/*SetState(GOOMBAFLY_STATE_WALKING_LEFT);*/
 }
 
 void CGoombafly::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -87,6 +87,29 @@ void CGoombafly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(GOOMBAFLY_STATE_WALKING_RIGHT);
 		else
 			SetState(GOOMBAFLY_STATE_WALKING_LEFT);
+	}
+
+	D3DXVECTOR2 goombafly = this->GetPosition();
+	CMario* mario = nullptr;
+
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<CMario*>(obj))
+		{
+			mario = dynamic_cast<CMario*>(obj);
+			break;
+		}
+	}
+
+	D3DXVECTOR2 marioPosition = mario->GetPosition();
+	float disPx = marioPosition.x - goombafly.x;
+
+	if (disPx > -300 && disPx < 300 && !isSpawn)
+	{
+		isSpawn = true;
+		SetPosition(goombafly.x, goombafly.y);
+		SetState(GOOMBAFLY_STATE_WALKING_LEFT);
 	}
 
 	CGameObject::Update(dt, coObjects);

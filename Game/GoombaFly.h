@@ -34,6 +34,7 @@ protected:
 
 	ULONGLONG die_start;
 	BOOLEAN isOnPlatform = false;
+	bool isSpawn = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -51,5 +52,9 @@ public:
 	float GetVx()
 	{
 		return vx;
+	}
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
 	}
 };

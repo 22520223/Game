@@ -4,9 +4,9 @@
 CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->ay = GOOMBA_GRAVITY;
+	this->ay = 0;
 	die_start = -1;
-	SetState(GOOMBA_STATE_WALKING);
+	/*SetState(GOOMBA_STATE_WALKING);*/
 }
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -61,6 +61,29 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
+	D3DXVECTOR2 goomba = this->GetPosition();
+	CMario* mario = nullptr;
+
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<CMario*>(obj))
+		{
+			mario = dynamic_cast<CMario*>(obj);
+			break;
+		}
+	}
+
+	D3DXVECTOR2 marioPosition = mario->GetPosition();
+	float disPx = marioPosition.x - goomba.x;
+
+	if (disPx > -300 && disPx < 300 && !isSpawn)
+	{
+		isSpawn = true;
+		SetPosition(goomba.x, goomba.y);
+		SetState(GOOMBA_STATE_WALKING);
+	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -91,6 +114,7 @@ void CGoomba::SetState(int state)
 		ay = 0;
 		break;
 	case GOOMBA_STATE_WALKING:
+		ay = GOOMBA_GRAVITY;
 		vx = -GOOMBA_WALKING_SPEED;
 		break;
 	case GOOMBA_STATE_DEFLECT:
