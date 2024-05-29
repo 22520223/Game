@@ -98,12 +98,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	//	OnCollisionWithBlock(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
-	if (dynamic_cast<CGoombafly*>(e->obj))
+	else if (dynamic_cast<CGoombafly*>(e->obj))
 		OnCollisionWithGoombaFly(e);
-	if (dynamic_cast<CLeaf*>(e->obj))
+	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
-	if (dynamic_cast<CPlantBullet*>(e->obj))
+	else if (dynamic_cast<CPlantBullet*>(e->obj))
 		OnCollisionWithPlantBullet(e);
+	else if (dynamic_cast<CFire*>(e->obj))
+		OnCollisionWithFire(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -402,6 +404,30 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPlantBullet(LPCOLLISIONEVENT e)
 {
 	CPlantBullet* plantbullet = dynamic_cast<CPlantBullet*>(e->obj);
+
+	if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_SUPER)
+		{
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+
+void CMario::OnCollisionWithFire(LPCOLLISIONEVENT e)
+{
+	CFire* fire = dynamic_cast<CFire*>(e->obj);
 
 	if (untouchable == 0)
 	{
