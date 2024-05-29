@@ -4,7 +4,8 @@ CLeaf::CLeaf(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = LEAF_GRAVITY;
-	SetState(LEAF_STATE_FALL);
+	fall_start = -1;
+	SetState(LEAF_STATE_FALL_LEFT);
 }
 
 void CLeaf::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -41,6 +42,15 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy = ay * dt;
 	vx += ax * dt;
 
+	if ((state == LEAF_STATE_FALL_LEFT) && (GetTickCount64() - fall_start > 500))
+	{
+		SetState(LEAF_STATE_FALL_RIGHT);
+	}
+	else if ((state == LEAF_STATE_FALL_RIGHT) && (GetTickCount64() - fall_start > 500))
+	{
+		SetState(LEAF_STATE_FALL_LEFT);
+	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -59,7 +69,15 @@ void CLeaf::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case LEAF_STATE_FALL:
+	case LEAF_STATE_FALL_LEFT:
+		fall_start = GetTickCount64();
+		vx = -LEAF_SPEED;
+		/*vy = 0;*/
+		break;
+	case LEAF_STATE_FALL_RIGHT:
+		fall_start = GetTickCount64();
+		vx = LEAF_SPEED;
+		/*vy = 0;*/
 		break;
 	}
 }

@@ -1,14 +1,15 @@
 #pragma once
 #include "GameObject.h"
 
-#define LEAF_GRAVITY 0.002f
-
+#define LEAF_GRAVITY 0.001f
+#define LEAF_SPEED	0.05f
 
 #define LEAF_BBOX_WIDTH 16
 #define LEAF_BBOX_HEIGHT 16
 
 
-#define LEAF_STATE_FALL 107
+#define LEAF_STATE_FALL_LEFT 107
+#define LEAF_STATE_FALL_RIGHT 108
 
 #define ID_ANI_LEAF_FALL 3010
 
@@ -17,6 +18,7 @@ class CLeaf : public CGameObject
 protected:
 	float ax;
 	float ay;
+	ULONGLONG fall_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
