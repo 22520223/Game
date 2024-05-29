@@ -6,7 +6,7 @@ CFire::CFire(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = 0;
 	fall_start = -1;
-	SetState(FIRE_STATE_BOT);
+	SetState(FIRE_STATE_TOP_RIGHT);
 }
 
 void CFire::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -57,17 +57,29 @@ void CFire::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case FIRE_STATE_MID:
+	case FIRE_STATE_MID_LEFT:
 		ay = 0;
 		ax = -FIRE_SPEED;
 		break;
-	case FIRE_STATE_TOP:
+	case FIRE_STATE_TOP_LEFT:
 		ay = -FIRE_GRAVITY;
 		ax = -FIRE_SPEED;
 		break;
-	case FIRE_STATE_BOT:
+	case FIRE_STATE_BOT_LEFT:
 		ay = FIRE_GRAVITY;
 		ax = -FIRE_SPEED;
+		break;
+	case FIRE_STATE_MID_RIGHT:
+		ay = 0;
+		ax = FIRE_SPEED;
+		break;
+	case FIRE_STATE_TOP_RIGHT:
+		ay = -FIRE_GRAVITY;
+		ax = FIRE_SPEED;
+		break;
+	case FIRE_STATE_BOT_RIGHT:
+		ay = FIRE_GRAVITY;
+		ax = FIRE_SPEED;
 		break;
 	}
 }
