@@ -43,7 +43,7 @@ leaf.txt
 1	-10	80
 
 #Goombafly
-12	140	100
+2	140	100
 
 #Koopas
 3	100	100
