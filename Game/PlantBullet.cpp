@@ -60,6 +60,8 @@ void CPlantBullet::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-
+	case PLANTBULLET_STATE_DIE:
+		this->Delete();
+		break;
 	}
 }

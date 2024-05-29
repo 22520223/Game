@@ -15,6 +15,7 @@
 #include "PlayScene.h"
 #include "GoombaFly.h"
 #include "Leaf.h"
+#include "PlantBullet.h"
 
 #include "Collision.h"
 //#include "SampleKeyEventHandler.h"
@@ -101,6 +102,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoombaFly(e);
 	if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
+	if (dynamic_cast<CPlantBullet*>(e->obj))
+		OnCollisionWithPlantBullet(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -393,6 +396,30 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 			level = MARIO_LEVEL_SUPER;
 		}
 		e->obj->Delete();
+	}
+}
+
+void CMario::OnCollisionWithPlantBullet(LPCOLLISIONEVENT e)
+{
+	CPlantBullet* plantbullet = dynamic_cast<CPlantBullet*>(e->obj);
+
+	if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_SUPER)
+		{
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
 	}
 }
 
