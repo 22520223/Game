@@ -23,7 +23,7 @@ class CFire : public CGameObject
 protected:
 	float ax;
 	float ay;
-	ULONGLONG fall_start;
+	ULONGLONG delete_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -5,7 +5,7 @@ CFire::CFire(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = 0;
-	fall_start = -1;
+	delete_start = -1;
 	SetState(FIRE_STATE_TOP_RIGHT);
 }
 
@@ -36,7 +36,10 @@ void CFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy = ay * dt;
 	vx = ax * dt;
 
-
+	if (GetTickCount64() - delete_start > 5000)
+	{
+		this->Delete();
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -59,26 +62,32 @@ void CFire::SetState(int state)
 	case FIRE_STATE_MID_LEFT:
 		ay = 0;
 		ax = -FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	case FIRE_STATE_TOP_LEFT:
 		ay = -FIRE_GRAVITY;
 		ax = -FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	case FIRE_STATE_BOT_LEFT:
 		ay = FIRE_GRAVITY;
 		ax = -FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	case FIRE_STATE_MID_RIGHT:
 		ay = 0;
 		ax = FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	case FIRE_STATE_TOP_RIGHT:
 		ay = -FIRE_GRAVITY;
 		ax = FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	case FIRE_STATE_BOT_RIGHT:
 		ay = FIRE_GRAVITY;
 		ax = FIRE_SPEED;
+		delete_start = GetTickCount64();
 		break;
 	}
 }

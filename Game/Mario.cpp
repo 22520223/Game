@@ -659,16 +659,17 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (state == MARIO_STATE_SUPER_LEFT)
+		aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
+	else if (state == MARIO_STATE_SUPER_RIGHT)
+		aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_SUPER)
 		aniId = GetAniIdSuper();
-	if (state == MARIO_STATE_SUPER_LEFT)
-		aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
-	else if (state == MARIO_STATE_SUPER_RIGHT)
-		aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
+	
 
 	animations->Get(aniId)->Render(x, y);
 
