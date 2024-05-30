@@ -55,14 +55,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
+	/*if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
 	{
 		SetState(MARIO_STATE_SUPER_LEFT);
 	}
 	else if (isJKeyDownHit && nx > 0 && level == MARIO_LEVEL_SUPER)
 	{
 		SetState(MARIO_STATE_SUPER_RIGHT);
-	}
+	}*/
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -71,14 +71,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if (GetTickCount64() - timeHit > 500)
+	/*if (GetTickCount64() - timeHit > 500)
 	{
 		isJKeyDownHit = false;
 		if (nx < 0)
 			SetState(MARIO_STATE_WALKING_LEFT);
 		else
 			SetState(MARIO_STATE_WALKING_RIGHT);
-	}
+	}*/
 
 	isOnPlatform = false;
 
