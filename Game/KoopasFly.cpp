@@ -75,7 +75,7 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 		isOnPlatform = true;
 	}
-	else if (GetState() != KOOPAS_STATE_KICK_LEFT && GetState() != KOOPAS_STATE_KICK_RIGHT && GetState() != KOOPAS_STATE_IDLE)
+	else if (GetState() != KOOPAS_STATE_KICK_LEFT && GetState() != KOOPAS_STATE_KICK_RIGHT && GetState() != KOOPAS_STATE_IDLE && state != KOOPASFLY_STATE_FLY_LEFT && state != KOOPASFLY_STATE_FLY_RIGHT)
 	{
 		if (vx < 0 && state != KOOPASFLY_STATE_WALKING_LEFT)
 			SetState(KOOPAS_STATE_WALKING_RIGHT);
@@ -88,7 +88,12 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
-		vx = -vx;
+		if (vx < 0 && state != KOOPASFLY_STATE_FLY_LEFT)
+			SetState(KOOPASFLY_STATE_FLY_RIGHT);
+		else if (vx > 0 && state != KOOPASFLY_STATE_FLY_RIGHT)
+			SetState(KOOPASFLY_STATE_FLY_LEFT);
+		else
+			vx = -vx;
 	}
 	if (dynamic_cast<CLuckyBrick*>(e->obj))
 		OnCollisionWithLuckyBrick(e);
@@ -112,6 +117,20 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		D3DXVECTOR2 koopasPosition = this->GetPosition();
 		SetPosition(koopasPosition.x, koopasPosition.y - 5);
 		isKicked = false;
+	}
+	else if ((state == KOOPASFLY_STATE_WALKING_LEFT || state == KOOPASFLY_STATE_WALKING_RIGHT) && isOnPlatform)
+	{
+		if (vx > 0)
+			SetState(KOOPASFLY_STATE_FLY_RIGHT);
+		else
+			SetState(KOOPASFLY_STATE_FLY_LEFT);
+	}
+	else if (((state == KOOPASFLY_STATE_FLY_LEFT) || (state == KOOPASFLY_STATE_FLY_RIGHT)) && isOnPlatform)
+	{
+		if (vx > 0)
+			SetState(KOOPASFLY_STATE_WALKING_RIGHT);
+		else
+			SetState(KOOPASFLY_STATE_WALKING_LEFT);
 	}
 
 
@@ -138,6 +157,14 @@ void CKoopasFly::Render()
 	else if (state == KOOPAS_STATE_KICK_RIGHT)
 	{
 		aniId = ID_ANI_KOOPAS_IDLE_LEFT;
+	}
+	else if (state == KOOPASFLY_STATE_FLY_RIGHT)
+	{
+		aniId = ID_ANI_KOOPASFLY_FLY_RIGHT;
+	}
+	else if (state == KOOPASFLY_STATE_FLY_LEFT)
+	{
+		aniId = ID_ANI_KOOPASFLY_FLY_LEFT;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -174,6 +201,18 @@ void CKoopasFly::SetState(int state)
 		break;
 	case KOOPAS_STATE_HOLD:
 		ay = 0;
+		break;
+	case KOOPASFLY_STATE_FLY_RIGHT:
+		vx = KOOPAS_WALKING_SPEED;
+		vy = -KOOPASFLY_DEFLECT_SPEED;
+		ay = 0.001f;
+		isOnPlatform = false;
+		break;
+	case KOOPASFLY_STATE_FLY_LEFT:
+		vx = -KOOPAS_WALKING_SPEED;
+		vy = -KOOPASFLY_DEFLECT_SPEED;
+		ay = 0.001f;
+		isOnPlatform = false;
 		break;
 	}
 }

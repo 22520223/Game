@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-
+#define KOOPASFLY_DEFLECT_SPEED 0.3f
 #define KOOPASFLY_BBOX_WIDTH 16
 #define KOOPASFLY_BBOX_HEIGHT 24
 #define KOOPASFLY_BBOX_HEIGHT_IDLE 16
@@ -25,7 +25,6 @@ protected:
 	bool haveCheck = false;
 	bool isKicked;
 	ULONGLONG die_start;
-
 	BOOLEAN isOnPlatform = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
