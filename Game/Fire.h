@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #define FIRE_GRAVITY 0.001f
-#define FIRE_SPEED	0.002f
+#define FIRE_SPEED	0.005f
 
 #define FIRE_BBOX_WIDTH 7
 #define FIRE_BBOX_HEIGHT 7

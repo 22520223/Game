@@ -100,7 +100,13 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetPosition(koopasPosition.x, koopasPosition.y - 5);
 		isKicked = false;
 	}
-
+	else if ((state == KOOPAS_STATE_HOLD) && (GetTickCount64() - die_start > 8000))
+	{
+		SetState(KOOPAS_STATE_WALKING_LEFT);
+		D3DXVECTOR2 koopasPosition = this->GetPosition();
+		SetPosition(koopasPosition.x, koopasPosition.y - 5);
+		isKicked = false;
+	}
 	
 
 	CGameObject::Update(dt, coObjects);
