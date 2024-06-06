@@ -148,6 +148,7 @@
     <ClInclude Include="GoombaFly.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="KoopasFly.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LuckyBrick.h" />
     <ClInclude Include="LuckyBrickCoin.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaFly.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="KoopasFly.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LuckyBrick.cpp" />
     <ClCompile Include="LuckyBrickCoin.cpp" />

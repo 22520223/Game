@@ -18,6 +18,7 @@
 #include "PlantBullet.h"
 #include "Fire.h"
 #include "Pipe.h"
+#include "KoopasFly.h"
 
 class CPlayScene : public CScene
 {

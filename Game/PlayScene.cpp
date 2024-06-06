@@ -131,6 +131,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PLANTBULLET: obj = new CPlantBullet(x, y); break;
 	case OBJECT_TYPE_FIRE: obj = new CFire(x, y); break;
 	case OBJECT_TYPE_PIPE: obj = new CPipe(x, y); break;
+	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

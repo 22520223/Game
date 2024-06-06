@@ -26,6 +26,7 @@
 #include "PlantBullet.h"
 #include "Fire.h"
 #include "Pipe.h"
+#include "KoopasFly.h"
 
 #include "SampleKeyEventHandler.h"
 
