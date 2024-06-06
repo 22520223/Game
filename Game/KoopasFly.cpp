@@ -46,7 +46,7 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 		D3DXVECTOR2 koopasPosition = this->GetPosition();
 		CCheckFall* checkfall = new CCheckFall(koopasPosition.x, koopasPosition.y);
 
-		if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_LEFT)
+		if (e->ny != 0 && ((GetState() == KOOPAS_STATE_WALKING_LEFT) || (GetState() == KOOPASFLY_STATE_WALKING_LEFT)))
 		{
 			checkfall->SetPosition(koopasPosition.x - 10, koopasPosition.y);
 			checkfall->SetState(CHECKFALL_STATE_LEFT);
@@ -56,7 +56,7 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 				playScene->AddObject(checkfall);
 			}
 		}
-		else if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_RIGHT)
+		else if (e->ny != 0 && ((GetState() == KOOPAS_STATE_WALKING_RIGHT) || (GetState() == KOOPASFLY_STATE_WALKING_RIGHT)))
 		{
 			checkfall->SetPosition(koopasPosition.x + 10, koopasPosition.y);
 			checkfall->SetState(CHECKFALL_STATE_RIGHT);
@@ -77,10 +77,14 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (GetState() != KOOPAS_STATE_KICK_LEFT && GetState() != KOOPAS_STATE_KICK_RIGHT && GetState() != KOOPAS_STATE_IDLE)
 	{
-		if (vx < 0)
+		if (vx < 0 && state != KOOPASFLY_STATE_WALKING_LEFT)
 			SetState(KOOPAS_STATE_WALKING_RIGHT);
-		else
+		else if (vx > 0 && state != KOOPASFLY_STATE_WALKING_RIGHT)
 			SetState(KOOPAS_STATE_WALKING_LEFT);
+		else if (vx < 0)
+			SetState(KOOPASFLY_STATE_WALKING_RIGHT);
+		else
+			SetState(KOOPASFLY_STATE_WALKING_LEFT);
 	}
 	else if (e->nx != 0)
 	{

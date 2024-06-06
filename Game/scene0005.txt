@@ -98,7 +98,7 @@ koopasfly.txt
 16	367	148
 
 #KoopasFly
-17	100	100
+17	200	40
 
 
 
