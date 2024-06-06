@@ -40,35 +40,8 @@ void CKoopasFly::OnNoCollision(DWORD dt)
 void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	/*if (dynamic_cast<CKoopasFly*>(e->obj)) return;*/
-	if (!haveCheck)
-	{
-		D3DXVECTOR2 koopasPosition = this->GetPosition();
-		CCheckFall* checkfall = new CCheckFall(koopasPosition.x, koopasPosition.y);
-
-		if (e->ny != 0 && ((GetState() == KOOPAS_STATE_WALKING_LEFT) || (GetState() == KOOPASFLY_STATE_WALKING_LEFT)))
-		{
-			checkfall->SetPosition(koopasPosition.x - 10, koopasPosition.y);
-			checkfall->SetState(CHECKFALL_STATE_LEFT);
-			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-			if (playScene)
-			{
-				playScene->AddObject(checkfall);
-			}
-		}
-		else if (e->ny != 0 && ((GetState() == KOOPAS_STATE_WALKING_RIGHT) || (GetState() == KOOPASFLY_STATE_WALKING_RIGHT)))
-		{
-			checkfall->SetPosition(koopasPosition.x + 10, koopasPosition.y);
-			checkfall->SetState(CHECKFALL_STATE_RIGHT);
-			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-			if (playScene)
-			{
-				playScene->AddObject(checkfall);
-			}
-		}
-
-		haveCheck = true;
-	}
+	if (dynamic_cast<CKoopasFly*>(e->obj)) return;
+	if (dynamic_cast<CKoopas*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -95,8 +68,6 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 		else
 			vx = -vx;
 	}
-	if (dynamic_cast<CLuckyBrick*>(e->obj))
-		OnCollisionWithLuckyBrick(e);
 }
 
 void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -104,21 +75,7 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPAS_STATE_IDLE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
-	{
-		SetState(KOOPAS_STATE_WALKING_LEFT);
-		D3DXVECTOR2 koopasPosition = this->GetPosition();
-		SetPosition(koopasPosition.x, koopasPosition.y - 5);
-		isKicked = false;
-	}
-	else if ((state == KOOPAS_STATE_HOLD) && (GetTickCount64() - die_start > 8000))
-	{
-		SetState(KOOPAS_STATE_WALKING_LEFT);
-		D3DXVECTOR2 koopasPosition = this->GetPosition();
-		SetPosition(koopasPosition.x, koopasPosition.y - 5);
-		isKicked = false;
-	}
-	else if ((state == KOOPASFLY_STATE_WALKING_LEFT || state == KOOPASFLY_STATE_WALKING_RIGHT) && isOnPlatform)
+	if ((state == KOOPASFLY_STATE_WALKING_LEFT || state == KOOPASFLY_STATE_WALKING_RIGHT) && isOnPlatform)
 	{
 		if (vx > 0)
 			SetState(KOOPASFLY_STATE_FLY_RIGHT);
@@ -184,24 +141,6 @@ void CKoopasFly::SetState(int state)
 		vx = KOOPAS_WALKING_SPEED;
 		ay = KOOPAS_GRAVITY;
 		break;
-	case KOOPAS_STATE_IDLE:
-		vx = 0;
-		ay = KOOPAS_GRAVITY;
-		isKicked = true;
-		die_start = GetTickCount64();
-		haveCheck = false;
-		break;
-	case KOOPAS_STATE_KICK_LEFT:
-		vx = KOOPAS_IDLE_SPEED;
-		ay = KOOPAS_GRAVITY;
-		break;
-	case KOOPAS_STATE_KICK_RIGHT:
-		vx = -KOOPAS_IDLE_SPEED;
-		ay = KOOPAS_GRAVITY;
-		break;
-	case KOOPAS_STATE_HOLD:
-		ay = 0;
-		break;
 	case KOOPASFLY_STATE_FLY_RIGHT:
 		vx = KOOPAS_WALKING_SPEED;
 		vy = -KOOPASFLY_DEFLECT_SPEED;
@@ -214,46 +153,5 @@ void CKoopasFly::SetState(int state)
 		ay = 0.001f;
 		isOnPlatform = false;
 		break;
-	}
-}
-
-void CKoopasFly::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
-{
-	CLuckyBrick* luckybrick = dynamic_cast<CLuckyBrick*>(e->obj);
-	if (GetState() == KOOPAS_STATE_KICK_LEFT || GetState() == KOOPAS_STATE_KICK_RIGHT)
-	{
-		if (e->nx != 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
-		{
-			luckybrick->SetState(LUCKYBRICK_STATE5);
-			D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
-			if (checkLevel)
-			{
-				float mushroomX = luckyBrickPosition.x;
-				float mushroomY = luckyBrickPosition.y - 20;
-
-				CMushroom* mushroom = new CMushroom(mushroomX, mushroomY);
-				mushroom->SetPosition(mushroomX, mushroomY);
-
-				CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-				if (playScene)
-				{
-					playScene->AddObject(mushroom);
-				}
-			}
-			else
-			{
-				float leafX = luckyBrickPosition.x;
-				float leafY = luckyBrickPosition.y - 20;
-
-				CLeaf* leaf = new CLeaf(leafX, leafY);
-				leaf->SetPosition(leafX, leafY);
-
-				CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-				if (playScene)
-				{
-					playScene->AddObject(leaf);
-				}
-			}
-		}
 	}
 }

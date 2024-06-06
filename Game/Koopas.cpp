@@ -8,6 +8,7 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 	this->ay = KOOPAS_GRAVITY;
 	isKicked = false;
 	die_start = 0;
+	haveCheck = false;
 	SetState(KOOPAS_STATE_WALKING_LEFT);
 }
 
@@ -38,7 +39,9 @@ void CKoopas::OnNoCollision(DWORD dt)
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	/*if (dynamic_cast<CKoopas*>(e->obj)) return;*/
+	if (dynamic_cast<CKoopas*>(e->obj)) return;
+	if (dynamic_cast<CKoopasFly*>(e->obj)) return;
+
 	if (!haveCheck)
 	{
 		D3DXVECTOR2 koopasPosition = this->GetPosition();

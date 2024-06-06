@@ -128,6 +128,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlantBullet(e);
 	else if (dynamic_cast<CFire*>(e->obj))
 		OnCollisionWithFire(e);
+	else if (dynamic_cast<CKoopasFly*>(e->obj))
+		OnCollisionWithKoopasFly(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -467,6 +469,103 @@ void CMario::OnCollisionWithFire(LPCOLLISIONEVENT e)
 		{
 			DebugOut(L">>> Mario DIE >>> \n");
 			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+
+void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
+{
+	CKoopasFly* koopasfly = dynamic_cast<CKoopasFly*>(e->obj);
+	D3DXVECTOR2 marioPosition = this->GetPosition();
+	float marioX = marioPosition.x;
+	D3DXVECTOR2 koopasflyPosition = koopasfly->GetPosition();
+	if (e->ny < 0)
+	{
+		koopasfly->Delete();
+		CKoopas* koopas = new CKoopas(koopasflyPosition.x, koopasflyPosition.y);
+		koopas->SetPosition(koopasflyPosition.x, koopasflyPosition.y);
+		koopas->SetState(KOOPAS_STATE_WALKING_LEFT);
+
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene)
+		{
+			playScene->AddObject(koopas);
+		}
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+		D3DXVECTOR2 koopasPosition = koopas->GetPosition();
+		CCheckFall* checkfall = new CCheckFall(koopasPosition.x, koopasPosition.y);
+
+		if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_LEFT)
+		{
+			checkfall->SetPosition(koopasPosition.x - 10, koopasPosition.y);
+			checkfall->SetState(CHECKFALL_STATE_LEFT);
+			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+			if (playScene)
+			{
+				playScene->AddObject(checkfall);
+			}
+		}
+		else if (e->ny != 0 && GetState() == KOOPAS_STATE_WALKING_RIGHT)
+		{
+			checkfall->SetPosition(koopasPosition.x + 10, koopasPosition.y);
+			checkfall->SetState(CHECKFALL_STATE_RIGHT);
+			CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+			if (playScene)
+			{
+				playScene->AddObject(checkfall);
+			}
+		}
+
+		koopas->SethaveCheck(true);
+
+		/*float distance = marioX - koopasX;
+		if (koopasfly->GetState() == KOOPAS_STATE_WALKING_LEFT || koopasfly->GetState() == KOOPAS_STATE_WALKING_RIGHT)
+		{
+			koopasfly->SetState(KOOPAS_STATE_IDLE);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopasfly->GetState() == KOOPAS_STATE_IDLE)
+		{
+			if (distance > 0)
+			{
+				koopasfly->SetPosition(koopasPosition.x, koopasPosition.y - 5);
+				koopasfly->SetState(KOOPAS_STATE_KICK_RIGHT);
+			}
+			else
+			{
+				koopasfly->SetPosition(koopasPosition.x, koopasPosition.y - 5);
+				koopasfly->SetState(KOOPAS_STATE_KICK_LEFT);
+			}
+
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopasfly->GetState() == KOOPAS_STATE_KICK_LEFT || koopasfly->GetState() == KOOPAS_STATE_KICK_RIGHT)
+		{
+			koopasfly->SetPosition(koopasPosition.x, koopasPosition.y - 5);
+			koopasfly->SetState(KOOPAS_STATE_IDLE);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}*/
+	}
+	else
+	{
+		if (untouchable == 0)
+		{
+			if (level == MARIO_LEVEL_SUPER)
+			{
+				level = MARIO_LEVEL_BIG;
+				StartUntouchable();
+			}
+			else if (level == MARIO_LEVEL_BIG)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
 		}
 	}
 }

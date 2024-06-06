@@ -32,11 +32,10 @@ protected:
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 1; }
+	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	void OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e);
 
 public:
 	CKoopasFly(float x, float y);
@@ -49,5 +48,8 @@ public:
 	{
 		this->haveCheck = b;
 	}
-	int checkLevel;
+	float GetVx()
+	{
+		return vx;
+	}
 };
