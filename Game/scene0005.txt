@@ -17,6 +17,7 @@ plantbullet.txt
 fire.txt
 pipe.txt
 koopasfly.txt
+plantpiranha.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -100,6 +101,8 @@ koopasfly.txt
 #KoopasFly
 17	500	40
 
+#PlantPiranha
+18	100	100
 
 
 

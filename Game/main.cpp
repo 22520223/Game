@@ -27,6 +27,7 @@
 #include "Fire.h"
 #include "Pipe.h"
 #include "KoopasFly.h"
+#include "PlantPiranha.h"
 
 #include "SampleKeyEventHandler.h"
 
