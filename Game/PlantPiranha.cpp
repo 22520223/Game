@@ -61,12 +61,12 @@ void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		StartEat();
 	}
 	else if (isOnPlatform && plantPosition.x > marioPosition.x)
-		SetState(PLANTPIRANHA_STATE_UP_DOWN);
+		SetState(PLANTPIRANHA_STATE_UP);
 	else if (plantPosition.y < 109 && GetState() != PLANTPIRANHA_STATE_DOWN)
 		SetState(PLANTPIRANHA_STATE_EAT);
 
 
-	SetState(PLANTPIRANHA_STATE_UP);
+	//SetState(PLANTPIRANHA_STATE_UP);
 
 	if (eat_time == -1)
 	{

@@ -130,6 +130,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFire(e);
 	else if (dynamic_cast<CKoopasFly*>(e->obj))
 		OnCollisionWithKoopasFly(e);
+	else if (dynamic_cast<CPlantPiranha*>(e->obj))
+		OnCollisionWithPlantPiranha(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -566,6 +568,30 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
 				DebugOut(L">>> Mario DIE >>> \n");
 				SetState(MARIO_STATE_DIE);
 			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e)
+{
+	CPlantPiranha* plantpiranha = dynamic_cast<CPlantPiranha*>(e->obj);
+
+	if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_SUPER)
+		{
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
 		}
 	}
 }
