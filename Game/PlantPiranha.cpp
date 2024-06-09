@@ -60,9 +60,9 @@ void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		hibernate = true;
 		StartEat();
 	}
-	else if (isOnPlatform && plantPosition.x > marioPosition.x)
+	else if (isOnPlatform)
 		SetState(PLANTPIRANHA_STATE_UP);
-	else if (plantPosition.y < 109 && GetState() != PLANTPIRANHA_STATE_DOWN)
+	else if (plantPosition.y < 130 && GetState() != PLANTPIRANHA_STATE_DOWN)
 		SetState(PLANTPIRANHA_STATE_EAT);
 
 
@@ -74,7 +74,7 @@ void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!isEat)
 			SetState(PLANTPIRANHA_STATE_DOWN);
 	}
-	else if (GetTickCount64() - eat_time > 6500 && !hibernate)
+	else if (GetTickCount64() - eat_time > 4000 && !hibernate)
 	{
 		SetState(PLANTPIRANHA_STATE_DOWN);
 		eat_time = -1;
