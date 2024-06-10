@@ -60,4 +60,5 @@ public:
 		this->haveCheck = b;
 	}
 	int checkLevel;
+	bool isSpawn = false;
 };

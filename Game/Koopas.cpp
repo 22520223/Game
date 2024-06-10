@@ -5,11 +5,11 @@
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->ay = KOOPAS_GRAVITY;
+	this->ay = 0;
 	isKicked = false;
 	die_start = 0;
 	haveCheck = false;
-	SetState(KOOPAS_STATE_WALKING_LEFT);
+	//SetState(KOOPAS_STATE_WALKING_LEFT);
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -111,6 +111,28 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isKicked = false;
 	}
 	
+	D3DXVECTOR2 koopas = this->GetPosition();
+	CMario* mario = nullptr;
+
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<CMario*>(obj))
+		{
+			mario = dynamic_cast<CMario*>(obj);
+			break;
+		}
+	}
+
+	D3DXVECTOR2 marioPosition = mario->GetPosition();
+	float disPx = marioPosition.x - koopas.x;
+
+	if (disPx > -300 && disPx < 300 && !isSpawn)
+	{
+		isSpawn = true;
+		SetPosition(koopas.x, koopas.y);
+		SetState(KOOPAS_STATE_WALKING_LEFT);
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

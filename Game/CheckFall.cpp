@@ -55,7 +55,9 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	D3DXVECTOR2 koopasPosition = koopas->GetPosition();
 	float dis = abs(checkfall.x - koopasPosition.x);
 
-	if (GetState() == CHECKFALL_STATE_VX && dis > 10 && koopas->GetState() != KOOPAS_STATE_IDLE)
+	if (GetState() == CHECKFALL_STATE_VX && dis > 20 && koopas->GetState() != KOOPAS_STATE_IDLE
+		&& koopas->GetState() != KOOPAS_STATE_KICK_LEFT && 
+		koopas->GetState() != KOOPAS_STATE_KICK_RIGHT && koopas->GetState() != KOOPAS_STATE_HOLD)
 	{
 		this->Delete();
 		koopas->SethaveCheck(false);
@@ -83,7 +85,7 @@ void CCheckFall::Render()
 	int aniId = ID_ANI_CHECKFALL;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CCheckFall::SetState(int state)
