@@ -1,7 +1,8 @@
 #include"PlantBullet.h"
 #include"Mario.h"
 #include"Fire.h"
-#include "PlayScene.h"
+#include"PlayScene.h"
+#include"Koopas.h"
 
 CPlantBullet::CPlantBullet(float x, float y) :CGameObject(x, y)
 {
@@ -31,6 +32,8 @@ void CPlantBullet::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		isOnPlatform = true;
 	}
+	if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -192,5 +195,14 @@ void CPlantBullet::SetState(int state)
 		ay = PLANTBULLET_GRAVITY;
 		isShoot = false;
 		break;
+	}
+}
+
+void CPlantBullet::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+	if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
+	{
+		SetState(PLANTBULLET_STATE_DIE);
 	}
 }
