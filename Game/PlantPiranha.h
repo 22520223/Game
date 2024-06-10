@@ -8,6 +8,7 @@
 #define PLANTPIRANHA_STATE_EAT 1351
 #define PLANTPIRANHA_STATE_DOWN 1352
 #define PLANTPIRANHA_STATE_UP 1353
+#define PLANTPIRANHA_STATE_DIE 1354
 
 #define ID_ANI_PLANTPIRANHA_UP_DOWN 1345		
 
@@ -29,6 +30,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 
 public:
 	CPlantPiranha(float x, float y);

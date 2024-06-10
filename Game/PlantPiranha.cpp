@@ -1,7 +1,8 @@
 #include"PlantBullet.h"
 #include"Mario.h"
 #include"PlantPiranha.h"
-#include "PlayScene.h"
+#include"PlayScene.h"
+#include"Koopas.h"
 
 CPlantPiranha::CPlantPiranha(float x, float y) :CGameObject(x, y)
 {
@@ -31,6 +32,8 @@ void CPlantPiranha::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		isOnPlatform = true;
 	}
+	if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -99,7 +102,7 @@ void CPlantPiranha::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case PLANTBULLET_STATE_DIE:
+	case PLANTPIRANHA_STATE_DIE:
 		this->Delete();
 		break;
 	case PLANTPIRANHA_STATE_UP:
@@ -116,5 +119,13 @@ void CPlantPiranha::SetState(int state)
 		isEat = true;
 		hibernate = false;
 		break;
+	}
+}
+void CPlantPiranha::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+	if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
+	{
+		SetState(PLANTPIRANHA_STATE_DIE);
 	}
 }
