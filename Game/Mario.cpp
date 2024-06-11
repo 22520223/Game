@@ -55,14 +55,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	/*if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
+	if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
 	{
-		SetState(MARIO_STATE_SUPER_LEFT);
+		StartHit();
+		hitLeft = true;
+		isJKeyDownHit = false;
 	}
 	else if (isJKeyDownHit && nx > 0 && level == MARIO_LEVEL_SUPER)
 	{
-		SetState(MARIO_STATE_SUPER_RIGHT);
-	}*/
+		StartHit();
+		hitRight = true;
+		isJKeyDownHit = false;
+	}
+
+	if (GetTickCount64() - timeHit > MARIO_HIT_TIME)
+	{
+		hitRight = hitLeft = false;
+	}
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -70,15 +79,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
-	/*if (GetTickCount64() - timeHit > 500)
-	{
-		isJKeyDownHit = false;
-		if (nx < 0)
-			SetState(MARIO_STATE_WALKING_LEFT);
-		else
-			SetState(MARIO_STATE_WALKING_RIGHT);
-	}*/
 
 	isOnPlatform = false;
 
@@ -750,12 +750,19 @@ int CMario::GetAniIdSuper()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_MARIO_SUPER_IDLE_RIGHT;
+				if (hitRight)
+					aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
+				else if (hitLeft)
+					aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
+				else if (nx > 0) aniId = ID_ANI_MARIO_SUPER_IDLE_RIGHT;
 				else aniId = ID_ANI_MARIO_SUPER_IDLE_LEFT;
 			}
 			else if (vx > 0)
 			{
-				if (ax < 0)
+
+				if (hitRight)
+					aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
+				else if (ax < 0)
 					aniId = ID_ANI_MARIO_SUPER_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_SUPER_RUNNING_RIGHT;
@@ -764,7 +771,9 @@ int CMario::GetAniIdSuper()
 			}
 			else // vx < 0
 			{
-				if (ax > 0)
+				if (hitLeft)
+					aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
+				else if (ax > 0)
 					aniId = ID_ANI_MARIO_SUPER_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_SUPER_RUNNING_LEFT;
@@ -784,17 +793,13 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
-	else if (state == MARIO_STATE_SUPER_LEFT)
-		aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
-	else if (state == MARIO_STATE_SUPER_RIGHT)
-		aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_SUPER)
 		aniId = GetAniIdSuper();
-	
+
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -878,12 +883,12 @@ void CMario::SetState(int state)
 		vx = 0;
 		ax = 0;
 		break;
-	case MARIO_STATE_SUPER_LEFT:
+	/*case MARIO_STATE_SUPER_LEFT:
 		timeHit = GetTickCount64();
 		break;
 	case MARIO_STATE_SUPER_RIGHT:
 		timeHit = GetTickCount64();
-		break;
+		break;*/
 	}
 	CGameObject::SetState(state);
 }
