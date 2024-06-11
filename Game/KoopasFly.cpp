@@ -10,7 +10,7 @@ CKoopasFly::CKoopasFly(float x, float y) :CGameObject(x, y)
 	this->ay = KOOPAS_GRAVITY;
 	isKicked = false;
 	die_start = 0;
-	SetState(KOOPASFLY_STATE_WALKING_LEFT);
+	//SetState(KOOPASFLY_STATE_WALKING_LEFT);
 }
 
 void CKoopasFly::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -90,6 +90,28 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPASFLY_STATE_WALKING_LEFT);
 	}
 
+	D3DXVECTOR2 koopasfly = this->GetPosition();
+	CMario* mario = nullptr;
+
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<CMario*>(obj))
+		{
+			mario = dynamic_cast<CMario*>(obj);
+			break;
+		}
+	}
+
+	D3DXVECTOR2 marioPosition = mario->GetPosition();
+	float disPx = marioPosition.x - koopasfly.x;
+
+	if (disPx > -200 && disPx < 200 && !isSpawn)
+	{
+		isSpawn = true;
+		SetPosition(koopasfly.x, koopasfly.y);
+		SetState(KOOPASFLY_STATE_WALKING_LEFT);
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

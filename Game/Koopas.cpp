@@ -127,7 +127,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	D3DXVECTOR2 marioPosition = mario->GetPosition();
 	float disPx = marioPosition.x - koopas.x;
 
-	if (disPx > -300 && disPx < 300 && !isSpawn)
+	if (disPx > -200 && disPx < 200 && !isSpawn)
 	{
 		isSpawn = true;
 		SetPosition(koopas.x, koopas.y);

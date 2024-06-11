@@ -85,7 +85,7 @@ void CCheckFall::Render()
 	int aniId = ID_ANI_CHECKFALL;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CCheckFall::SetState(int state)

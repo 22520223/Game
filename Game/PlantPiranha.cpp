@@ -57,7 +57,7 @@ void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float disPy = marioPosition.y - plantPosition.y;
 	float disPx = marioPosition.x - plantPosition.x;
 
-	if (isOnPlatform && ((disPx > -30 && disPx < 30) || disPx < -300 || disPx > 300))
+	if (isOnPlatform && ((disPx > -30 && disPx < 30) || disPx < -200 || disPx > 260))
 	{
 		ay = 0;
 		hibernate = true;

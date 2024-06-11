@@ -36,7 +36,7 @@ plantpiranha.txt
 
 
 # MARIO
-0	1700	100
+0	20	100
 
 #COIN
 4	1080	85
@@ -60,7 +60,8 @@ plantpiranha.txt
 12	1040	140
 
 #Koopas
-3	1800	100
+3	550	100
+3	1450	100
 
 #Mushroom
 
@@ -115,7 +116,9 @@ plantpiranha.txt
 
 
 #KoopasFly
-#17	500	40
+17	1340	40
+17	1380	20
+17	1420	10
 
 #PlantPiranha
 18	1807	140
