@@ -439,7 +439,10 @@ void CMario::OnCollisionWithPlantBullet(LPCOLLISIONEVENT e)
 
 	if (untouchable == 0)
 	{
-		if (level == MARIO_LEVEL_SUPER)
+		if (e->nx != 0)
+			if (hitLeft || hitRight)
+				plantbullet->Delete();
+		else if (level == MARIO_LEVEL_SUPER)
 		{
 			level = MARIO_LEVEL_BIG;
 			StartUntouchable();
@@ -597,7 +600,10 @@ void CMario::OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e)
 
 	if (untouchable == 0)
 	{
-		if (level == MARIO_LEVEL_SUPER)
+		if (e->nx != 0)
+			if (hitLeft || hitRight)
+				plantpiranha->Delete();
+		else if (level == MARIO_LEVEL_SUPER)
 		{
 			level = MARIO_LEVEL_BIG;
 			StartUntouchable();
