@@ -151,7 +151,9 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0 && goomba->GetState() != GOOMBA_STATE_DEFLECT)
 		{
-			if (goomba->GetState() != GOOMBA_STATE_DIE)
+			if (hitLeft || hitRight)
+				goomba->SetState(GOOMBA_STATE_DEFLECT);
+			else if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
 				if (level == MARIO_LEVEL_SUPER)
 				{
@@ -291,7 +293,9 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0 && goombafly->GetState() != GOOMBA_STATE_DEFLECT)
 		{
-			if (goombafly->GetState() != GOOMBA_STATE_DIE)
+			if (hitLeft || hitRight)
+				goombafly->SetState(GOOMBAFLY_STATE_DEFLECT);
+			else if (goombafly->GetState() != GOOMBA_STATE_DIE)
 			{
 				if (level == MARIO_LEVEL_SUPER)
 				{
