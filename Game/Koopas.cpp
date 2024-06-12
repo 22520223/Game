@@ -89,6 +89,8 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CLuckyBrick*>(e->obj))
 		OnCollisionWithLuckyBrick(e);
+	else if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -239,5 +241,14 @@ void CKoopas::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 				}
 			}
 		}
+	}
+}
+
+void CKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+	if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
+	{
+		SetState(KOOPAS_STATE_DEFLECT);
 	}
 }
