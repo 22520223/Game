@@ -559,7 +559,20 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (level == MARIO_LEVEL_SUPER)
+			if (hitLeft || hitRight)
+			{
+				koopasfly->Delete();
+				CKoopas* koopas = new CKoopas(koopasflyPosition.x, koopasflyPosition.y);
+				koopas->SetState(KOOPAS_STATE_DEFLECT);
+
+				CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+				if (playScene)
+				{
+					playScene->AddObject(koopas);
+				}
+				
+			}
+			else if (level == MARIO_LEVEL_SUPER)
 			{
 				level = MARIO_LEVEL_BIG;
 				StartUntouchable();
