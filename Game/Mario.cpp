@@ -374,7 +374,9 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() == KOOPAS_STATE_IDLE)
+			if (hitLeft || hitRight)
+				koopas->SetState(KOOPAS_STATE_DEFLECT);
+			else if (koopas->GetState() == KOOPAS_STATE_IDLE)
 			{
 				if (level == MARIO_LEVEL_SMALL)
 					koopas->checkLevel = 1;

@@ -194,6 +194,10 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_HOLD:
 		ay = 0;
 		break;
+	case KOOPAS_STATE_DEFLECT:
+		vy = -KOOPAS_DEFLECT_SPEED;
+		SetState(KOOPAS_STATE_IDLE);
+		break;
 	}
 }
 

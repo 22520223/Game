@@ -62,12 +62,12 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	{
 		if (game->IsKeyDown(DIK_A))
 		{
-			if (mario->GetLevel() == MARIO_LEVEL_SUPER)
-				mario->isJKeyDown = true;
+			mario->isJKeyDown = true;
 			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 		}
 		else
 		{
+			mario->isJKeyDown = false;
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
 		}
 	}
@@ -75,12 +75,12 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	{
 		if (game->IsKeyDown(DIK_A))
 		{
-			if (mario->GetLevel() == MARIO_LEVEL_SUPER)
-				mario->isJKeyDown = true;
+			mario->isJKeyDown = true;
 			mario->SetState(MARIO_STATE_RUNNING_LEFT);
 		}
 		else
 		{
+			mario->isJKeyDown = false;
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
 	}
