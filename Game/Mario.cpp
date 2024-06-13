@@ -24,8 +24,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	if (isFly && level == MARIO_LEVEL_SUPER)
-		vy += ay;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	
 	CKoopas* koopas = nullptr;
@@ -79,10 +77,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isFly = false;
 		aniFly = false;
 	}
-	if (isFly && level == MARIO_LEVEL_SUPER && (state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT))
+	if (isFly && level == MARIO_LEVEL_SUPER && vx == MARIO_RUNNING_SPEED)
 	{
 		StartFly();
-		ay = -MARIO_GRAVITY;
+		ay = -MARIO_GRAVITY * 0.75;
 		isFly = false;
 		aniFly = true;
 	}
@@ -108,10 +106,6 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
-	if (isFly && level == MARIO_LEVEL_SUPER)
-	{
-		y += vy;
-	}
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
