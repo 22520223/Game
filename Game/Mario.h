@@ -131,6 +131,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_HIT_TIME 600
+#define MARIO_FLY_TIME 200
 
 class CMario : public CGameObject
 {
@@ -145,6 +146,7 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	int coin;
 	ULONGLONG timeHit;
+	ULONGLONG timeFly;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -177,6 +179,7 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		timeHit = -1;
+		timeFly = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -202,6 +205,7 @@ public:
 	}
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartHit() { timeHit = GetTickCount64(); }
+	void StartFly() { timeFly = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	D3DXVECTOR2 GetPosition()
@@ -212,4 +216,5 @@ public:
 	bool isJKeyDownHit = false;
 	bool hitLeft = false;
 	bool hitRight = false;
+	bool isFly = false;
 };
