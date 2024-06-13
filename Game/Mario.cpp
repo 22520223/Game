@@ -146,9 +146,11 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CFire*>(e->obj))
 		OnCollisionWithFire(e);
 	else if (dynamic_cast<CKoopasFly*>(e->obj))
-		OnCollisionWithKoopasFly(e);
+		OnCollisionWithKoopasFly(e); 
 	else if (dynamic_cast<CPlantPiranha*>(e->obj))
 		OnCollisionWithPlantPiranha(e);
+	else if (dynamic_cast<CBreakableBrick*>(e->obj))
+		OnCollisionWithBreakableBrick(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -636,6 +638,15 @@ void CMario::OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e)
 			SetState(MARIO_STATE_DIE);
 		}
 	}
+}
+
+void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
+{
+	CBreakableBrick* breakabelbrick = dynamic_cast<CBreakableBrick*>(e->obj);
+
+	if (e->nx != 0)
+		if (hitLeft || hitRight)
+			breakabelbrick->Delete();
 }
 
 //
