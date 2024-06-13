@@ -50,6 +50,7 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
+	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 
 public:
 	CKoopas(float x, float y);

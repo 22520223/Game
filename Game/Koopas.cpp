@@ -91,6 +91,8 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLuckyBrick(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CBreakableBrick*>(e->obj))
+		OnCollisionWithBreakableBrick(e);
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -251,4 +253,13 @@ void CKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		SetState(KOOPAS_STATE_DEFLECT);
 	}
+}
+
+void CKoopas::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
+{
+	CBreakableBrick* breakabelbrick = dynamic_cast<CBreakableBrick*>(e->obj);
+
+	if (e->nx != 0)
+		if (state == KOOPAS_STATE_KICK_LEFT || state == KOOPAS_STATE_KICK_RIGHT)
+			breakabelbrick->Delete();
 }
