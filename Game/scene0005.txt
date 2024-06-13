@@ -37,7 +37,7 @@ breakablebrick.txt
 
 
 # MARIO
-0	2000	100
+0	20	100
 
 #COIN
 4	1080	85
