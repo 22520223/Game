@@ -63,6 +63,7 @@ breakablebrick.txt
 #Koopas
 3	550	100
 3	1450	100
+3	2060	100
 
 #Mushroom
 
@@ -153,7 +154,7 @@ breakablebrick.txt
 5 	2265	180	16	15	35	110012	110012	110012
 
 #BreakableBrick
-19	2040	100
+19	2040	160
 
 
 
