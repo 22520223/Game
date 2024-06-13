@@ -107,6 +107,9 @@
 #define ID_ANI_MARIO_SUPER_HIT_LEFT 2400
 #define ID_ANI_MARIO_SUPER_HIT_RIGHT 2401
 
+#define ID_ANI_MARIO_SUPER_FLY_RIGHT	2402
+#define ID_ANI_MARIO_SUPER_FLY_LEFT		2403
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -217,4 +220,5 @@ public:
 	bool hitLeft = false;
 	bool hitRight = false;
 	bool isFly = false;
+	bool aniFly = false;
 };
