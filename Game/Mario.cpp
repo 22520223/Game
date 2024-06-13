@@ -77,7 +77,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isFly = false;
 		aniFly = false;
 	}
-	if (isFly && level == MARIO_LEVEL_SUPER && vx == MARIO_RUNNING_SPEED)
+	if (isFly && level == MARIO_LEVEL_SUPER && (vx == MARIO_RUNNING_SPEED || vx == -MARIO_RUNNING_SPEED))
 	{
 		StartFly();
 		ay = -MARIO_GRAVITY * 0.75;
