@@ -647,6 +647,8 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 	if (e->nx != 0)
 		if (hitLeft || hitRight)
 			breakabelbrick->Delete();
+	if (e->ny > 0)
+		breakabelbrick->Delete();
 }
 
 //
