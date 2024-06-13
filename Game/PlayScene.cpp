@@ -133,6 +133,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE: obj = new CPipe(x, y); break;
 	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
 	case OBJECT_TYPE_PLANTPIRANHA: obj = new CPlantPiranha(x, y); break;
+	case OBJECT_TYPE_BREAKABLEBRICK: obj = new CBreakableBrick(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

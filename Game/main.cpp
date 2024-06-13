@@ -28,6 +28,7 @@
 #include "Pipe.h"
 #include "KoopasFly.h"
 #include "PlantPiranha.h"
+#include "BreakableBrick.h"
 
 #include "SampleKeyEventHandler.h"
 

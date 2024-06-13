@@ -20,6 +20,7 @@
 #include "Pipe.h"
 #include "KoopasFly.h"
 #include "PlantPiranha.h"
+#include "BreakableBrick.h"
 
 class CPlayScene : public CScene
 {
