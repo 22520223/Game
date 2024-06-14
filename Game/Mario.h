@@ -61,6 +61,13 @@
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
+#define ID_ANI_MARIO_HOLD_IDLE_RIGHT 1010
+#define ID_ANI_MARIO_HOLD_IDLE_LEFT 1011
+#define ID_ANI_MARIO_HOLD_RIGHT 1012
+#define ID_ANI_MARIO_HOLD_LEFT 1013
+#define ID_ANI_MARIO_KICK_RIGHT 1014
+#define ID_ANI_MARIO_KICK_LEFT 1015
+
 #define ID_ANI_MARIO_DIE 999
 
 // SMALL MARIO
@@ -135,6 +142,7 @@
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_HIT_TIME 600
 #define MARIO_FLY_TIME 200
+#define MARIO_FLY_KICK 200
 
 class CMario : public CGameObject
 {
@@ -150,6 +158,7 @@ class CMario : public CGameObject
 	int coin;
 	ULONGLONG timeHit;
 	ULONGLONG timeFly;
+	ULONGLONG timeKick;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -184,6 +193,7 @@ public:
 		untouchable_start = -1;
 		timeHit = -1;
 		timeFly = -1;
+		timeKick = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -210,6 +220,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartHit() { timeHit = GetTickCount64(); }
 	void StartFly() { timeFly = GetTickCount64(); }
+	void StartKick() { timeKick = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	D3DXVECTOR2 GetPosition()
@@ -222,4 +233,6 @@ public:
 	bool hitRight = false;
 	bool isFly = false;
 	bool aniFly = false;
+	bool isHold = false;
+	bool isKick = false;
 };
