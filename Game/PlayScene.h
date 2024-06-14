@@ -21,6 +21,7 @@
 #include "KoopasFly.h"
 #include "PlantPiranha.h"
 #include "BreakableBrick.h"
+#include "MapUnder.h"
 
 class CPlayScene : public CScene
 {

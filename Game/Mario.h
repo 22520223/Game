@@ -175,6 +175,7 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopasFly(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e);
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithMapUnder(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -235,4 +236,5 @@ public:
 	bool aniFly = false;
 	bool isHold = false;
 	bool isKick = false;
+	bool tele = false;
 };

@@ -166,6 +166,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlantPiranha(e);
 	else if (dynamic_cast<CBreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
+	else if (dynamic_cast<CMapUnder*>(e->obj))
+		OnCollisionWithMapUnder(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -676,6 +678,20 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 			breakabelbrick->Delete();
 	if (e->ny > 0)
 		breakabelbrick->Delete();
+}
+
+void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
+{
+	CMapUnder* mapunder = dynamic_cast<CMapUnder*>(e->obj);
+	if (!tele)
+	{
+		SetPosition(2160, 200);
+		tele = true;
+	}
+	else
+	{
+		SetPosition(2335, 125);
+	}
 }
 
 //

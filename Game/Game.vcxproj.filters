@@ -129,6 +129,9 @@
     <ClInclude Include="BreakableBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MapUnder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -231,6 +234,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BreakableBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapUnder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
