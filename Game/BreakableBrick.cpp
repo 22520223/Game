@@ -34,8 +34,9 @@ void CBreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (button->push)
 	{
-		CCoin* coin = new CCoin(this->x, this->y);
-		coin->SetPosition(this->x, this->x);
+		D3DXVECTOR2 brick = this->GetPosition();
+		CCoin* coin = new CCoin(brick.x, brick.y);
+		coin->SetPosition(brick.x, brick.y);
 		coin->SetState(COIN_IDLE);
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene)
