@@ -16,6 +16,7 @@
 #include "GoombaFly.h"
 #include "Leaf.h"
 #include "PlantBullet.h"
+#include "Button.h"
 
 #include "Collision.h"
 //#include "SampleKeyEventHandler.h"
@@ -184,6 +185,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBreakableBrick(e);
 	else if (dynamic_cast<CMapUnder*>(e->obj))
 		OnCollisionWithMapUnder(e);
+	else if (dynamic_cast<CButton*>(e->obj))
+		OnCollisionWithButton(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -708,6 +711,14 @@ void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
 	{
 		SetPosition(2335, 125);
 	}
+}
+
+void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
+{
+	CButton* button = dynamic_cast<CButton*>(e->obj);
+
+	if (e->ny < 0)
+		button->push = true;
 }
 
 //

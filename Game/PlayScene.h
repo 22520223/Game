@@ -22,6 +22,7 @@
 #include "PlantPiranha.h"
 #include "BreakableBrick.h"
 #include "MapUnder.h"
+#include "Button.h"
 
 class CPlayScene : public CScene
 {

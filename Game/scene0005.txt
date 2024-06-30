@@ -20,6 +20,7 @@ koopasfly.txt
 plantpiranha.txt
 breakablebrick.txt
 platform.txt
+button.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -61,7 +62,7 @@ platform.txt
 
 
 # MARIO
-0	20	100
+0	2000	100
 
 #COIN
 4	1080	85
@@ -237,6 +238,8 @@ platform.txt
 19	2120	164
 19	2056	164
 19	1961	164
+
+21	2100	100
 
 #MAPUNDER
 20	2270	-125
