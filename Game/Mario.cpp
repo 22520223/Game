@@ -717,8 +717,16 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 {
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 
-	if (e->ny < 0)
+	if (e->ny > 0 && button->GetState() == BUTTON_STATE_IDLE)
+	{
+		button->SetState(BUTTON_STATE_CAN_BE_PUSHED);
+		button->SetPosition(button->GetX(), button->GetY() - 8);
+	}
+	else if (e->ny < 0 && button->GetState() == BUTTON_STATE_CAN_BE_PUSHED)
+	{
 		button->push = true;
+		button->SetState(BUTTON_STATE_PUSHED);
+	}
 }
 
 //

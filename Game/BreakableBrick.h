@@ -12,4 +12,8 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	D3DXVECTOR2 GetPosition()
+	{
+		return D3DXVECTOR2(x, y);
+	}
 };

@@ -1,6 +1,8 @@
 #include "BreakableBrick.h"
 #include "Brick.h"
 #include "Button.h"
+#include "Coin.h"
+#include "PlayScene.h"
 
 void CBreakableBrick::Render()
 {
@@ -31,7 +33,17 @@ void CBreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	if (button->push)
+	{
+		CCoin* coin = new CCoin(this->x, this->y);
+		coin->SetPosition(this->x, this->x);
+		coin->SetState(COIN_IDLE);
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene)
+		{
+			playScene->AddObject(coin);
+		}
 		Delete();
+	}
 
 	/*CGameObject::Update(dt, coObjects);*/
 	CCollision::GetInstance()->Process(this, dt, coObjects);
