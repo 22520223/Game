@@ -24,6 +24,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	if (state == MARIO_STATE_IDLE)
+	{
+		float a = abs(ax);
+		if (vx > 0)
+		{
+			vx = vx - 40 * a;
+			if (vx < 0)
+				vx = 0;
+		}
+		else
+		{
+			vx = vx + 40 * a;
+			if (vx > 0)
+				vx = 0;
+		}
+	}
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	
 	CKoopas* koopas = nullptr;
@@ -764,7 +780,7 @@ int CMario::GetAniIdBig()
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (vx == MARIO_RUNNING_SPEED)
 		{
 			if (nx >= 0)
 			{
@@ -841,9 +857,9 @@ int CMario::GetAniIdBig()
 			{
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
+				else if (vx == MARIO_RUNNING_SPEED)
 					aniId = ID_ANI_MARIO_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (vx < MARIO_RUNNING_SPEED && vx > 0)
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 				if (isHold)
 					aniId = ID_ANI_MARIO_HOLD_RIGHT;
@@ -854,9 +870,9 @@ int CMario::GetAniIdBig()
 			{
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
+				else if (vx == -MARIO_RUNNING_SPEED)
 					aniId = ID_ANI_MARIO_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (vx > -MARIO_RUNNING_SPEED && vx < 0)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 				if (isHold)
 					aniId = ID_ANI_MARIO_HOLD_LEFT;
@@ -873,7 +889,7 @@ int CMario::GetAniIdSuper()
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (vx == MARIO_RUNNING_SPEED)
 		{
 			if (nx >= 0)
 				if (aniFly)
@@ -919,9 +935,9 @@ int CMario::GetAniIdSuper()
 					aniId = ID_ANI_MARIO_SUPER_HIT_RIGHT;
 				else if (ax < 0)
 					aniId = ID_ANI_MARIO_SUPER_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
+				else if (vx == MARIO_RUNNING_SPEED)
 					aniId = ID_ANI_MARIO_SUPER_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (vx < MARIO_RUNNING_SPEED && vx > 0)
 					aniId = ID_ANI_MARIO_SUPER_WALKING_RIGHT;
 			}
 			else // vx < 0
@@ -930,9 +946,9 @@ int CMario::GetAniIdSuper()
 					aniId = ID_ANI_MARIO_SUPER_HIT_LEFT;
 				else if (ax > 0)
 					aniId = ID_ANI_MARIO_SUPER_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
+				else if (vx == -MARIO_RUNNING_SPEED)
 					aniId = ID_ANI_MARIO_SUPER_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (vx > -MARIO_RUNNING_SPEED && vx < 0)
 					aniId = ID_ANI_MARIO_SUPER_WALKING_LEFT;
 			}
 
@@ -1029,8 +1045,8 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_IDLE:
-		ax = 0.0f;
-		vx = 0.0f;
+		//ax = 0.0f;
+		//vx = 0.0f;
 		break;
 
 	case MARIO_STATE_DIE:
