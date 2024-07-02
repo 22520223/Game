@@ -711,7 +711,7 @@ void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
 	CMapUnder* mapunder = dynamic_cast<CMapUnder*>(e->obj);
 	if (!tele)
 	{
-		SetPosition(2160, 200);
+		SetPosition(2115, 260);
 		tele = true;
 	}
 	else
