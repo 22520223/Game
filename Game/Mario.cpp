@@ -111,6 +111,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isFly = false;
 		aniFly = true;
 	}
+	else if (isFly && level == MARIO_LEVEL_SUPER && (vx < MARIO_RUNNING_SPEED && vx > -MARIO_RUNNING_SPEED))
+	{
+		StartFly();
+		ay = -MARIO_GRAVITY * 0.3;
+		isFly = false;
+		aniFly = true;
+	}
 
 	if (GetTickCount64() - timeFly > MARIO_FLY_TIME)
 	{
@@ -924,9 +931,15 @@ int CMario::GetAniIdSuper()
 		else
 		{
 			if (nx >= 0)
-				aniId = ID_ANI_MARIO_SUPER_JUMP_WALK_RIGHT;
+				if (aniFly)
+					aniId = ID_ANI_MARIO_SUPER_FLY_RIGHT_SLOW;
+				else
+					aniId = ID_ANI_MARIO_SUPER_JUMP_WALK_RIGHT;
 			else
-				aniId = ID_ANI_MARIO_SUPER_JUMP_WALK_LEFT;
+				if (aniFly)
+					aniId = ID_ANI_MARIO_SUPER_FLY_LEFT_SLOW;
+				else
+					aniId = ID_ANI_MARIO_SUPER_JUMP_WALK_LEFT;
 		}
 	}
 	else
@@ -1034,9 +1047,9 @@ void CMario::SetState(int state)
 		if (isOnPlatform)
 		{
 			if (abs(this->vx) == MARIO_RUNNING_SPEED)
-				vy = -MARIO_JUMP_RUN_SPEED_Y;
+				vy = -MARIO_JUMP_RUN_SPEED_Y * 1.1;
 			else
-				vy = -MARIO_JUMP_SPEED_Y;
+				vy = -MARIO_JUMP_SPEED_Y * 1.15;
 		}
 		break;
 
