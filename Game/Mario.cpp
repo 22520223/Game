@@ -271,7 +271,7 @@ void CMario::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 
 	if (e->ny > 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
 	{
-		luckybrick->SetState(LUCKYBRICK_STATE5);
+		luckybrick->SetState(LUCKYBRICK_STATE_DEFLECT);
 		D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
 		if (level == MARIO_LEVEL_SMALL)
 		{

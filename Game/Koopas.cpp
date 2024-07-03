@@ -212,7 +212,7 @@ void CKoopas::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 	{
 		if (e->nx != 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
 		{
-			luckybrick->SetState(LUCKYBRICK_STATE5);
+			luckybrick->SetState(LUCKYBRICK_STATE_DEFLECT);
 			D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
 			if (checkLevel)
 			{
