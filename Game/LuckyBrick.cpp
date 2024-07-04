@@ -34,7 +34,7 @@ void CLuckyBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		preY = brick.y;
 	}
 
-	if ((preY - brick.y) < 0.1 && state == LUCKYBRICK_STATE_DEFLECT && GetTickCount64() - fall_start > 10)
+	if ((preY - brick.y) < 0.5 && state == LUCKYBRICK_STATE_DEFLECT && GetTickCount64() - fall_start > 10)
 	{
 		SetState(LUCKYBRICK_STATE5);
 	}

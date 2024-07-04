@@ -311,7 +311,7 @@ void CMario::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 	if (e->ny > 0 and luckybrickcoin->GetState() != LUCKYBRICK_STATE5)
 	{
 		coin++;
-		luckybrickcoin->SetState(LUCKYBRICK_STATE5);
+		luckybrickcoin->SetState(LUCKYBRICK_STATE_DEFLECT);
 		D3DXVECTOR2 luckyBrickCoinPosition = luckybrickcoin->GetPosition();
 		float coinX = luckyBrickCoinPosition.x;
 		float coinY = luckyBrickCoinPosition.y - 20;
