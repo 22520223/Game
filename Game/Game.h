@@ -10,8 +10,10 @@ using namespace std;
 #include <dinput.h>
 
 #include "Texture.h"
+#include "Textures.h"
 #include "KeyEventHandler.h"
 #include "Scene.h"
+#include <string>
 
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
@@ -26,6 +28,8 @@ class CGame
 {
 	static CGame* __instance;
 	HWND hWnd;									// Window handle
+
+	CTextures* textures = CTextures::GetInstance();
 
 	int backBufferWidth = 0;					// Backbuffer width & height, will be set during Direct3D initialization
 	int backBufferHeight = 0;
@@ -47,6 +51,8 @@ class CGame
 
 	float cam_x = 0.0f;
 	float cam_y = 0.0f;
+
+	D3DXVECTOR3 cameraPosition;
 
 	HINSTANCE hInstance;
 
@@ -108,11 +114,16 @@ public:
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);
+	void LoadResources();
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
 
 	void _ParseSection_TEXTURES(string line);
 
+	D3DXVECTOR3 GetCameraPositon() {
+		this->GetCamPos(cameraPosition.x, cameraPosition.y);
+		return this->cameraPosition;
+	}
 
 	~CGame();
 };

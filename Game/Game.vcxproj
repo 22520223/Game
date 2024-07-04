@@ -144,6 +144,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Effects.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="MapUnder.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlantBullet.h" />
     <ClInclude Include="PlantPiranha.h" />
@@ -186,6 +188,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="Effects.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

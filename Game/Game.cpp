@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "debug.h"
 #include "Utils.h"
+#include "Define.h"
 
 #include "Texture.h"
 #include "Animations.h"
@@ -436,6 +437,7 @@ void CGame::ProcessKeyboard()
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
+#define GAME_FILE_SECTION_SCENES_TEXTURES 4
 
 
 void CGame::_ParseSection_SETTINGS(string line)
@@ -447,6 +449,18 @@ void CGame::_ParseSection_SETTINGS(string line)
 		next_scene = atoi(tokens[1].c_str());
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
+}
+
+void CGame::_ParseSection_TEXTURES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+
+	int texID = atoi(tokens[0].c_str());
+	wstring path = ToWSTR(tokens[1]);
+
+	CTextures::GetInstance()->Add(texID, path.c_str());
 }
 
 void CGame::_ParseSection_SCENES(string line)
@@ -484,6 +498,7 @@ void CGame::Load(LPCWSTR gameFile)
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
+		if (line == "[SCENES_TEXTURES]") { section = GAME_FILE_SECTION_SCENES_TEXTURES; continue; }
 		if (line[0] == '[')
 		{
 			section = GAME_FILE_SECTION_UNKNOWN;
@@ -531,18 +546,15 @@ void CGame::InitiateSwitchScene(int scene_id)
 }
 
 
-void CGame::_ParseSection_TEXTURES(string line)
+void CGame::LoadResources()
 {
-	vector<string> tokens = split(line);
+	//Load this instead of read mario-sample.txt
+	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png");
+	textures->Add(ID_TEX_MARIO, L"textures\\mario.png");
+	textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png");
+	textures->Add(ID_TEX_MISC, L"textures\\misc.png");
 
-	if (tokens.size() < 2) return;
-
-	int texID = atoi(tokens[0].c_str());
-	wstring path = ToWSTR(tokens[1]);
-
-	CTextures::GetInstance()->Add(texID, path.c_str());
 }
-
 
 CGame::~CGame()
 {
