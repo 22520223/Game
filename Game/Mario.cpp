@@ -709,13 +709,13 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
 {
 	CMapUnder* mapunder = dynamic_cast<CMapUnder*>(e->obj);
-	if (!tele)
+	if (!tele && isSit)
 	{
 		SetPosition(2115, 260);
 		tele = true;
 		inRoom = true;
 	}
-	else
+	else if(tele)
 	{
 		SetPosition(2335, 125);
 		inRoom = false;

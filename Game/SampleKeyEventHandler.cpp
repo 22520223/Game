@@ -88,6 +88,10 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
 	}
+	else if (game->IsKeyDown(DIK_DOWN))
+	{
+		mario->isSit = true;
+	}
 	else
 	{
 		if (mario->GetState() != MARIO_STATE_SUPER_RIGHT && mario->GetState() != MARIO_STATE_SUPER_LEFT)

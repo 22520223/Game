@@ -242,4 +242,5 @@ public:
 	bool isKick = false;
 	bool tele = false;
 	bool inRoom = false;
+	bool isSit = false;
 };
