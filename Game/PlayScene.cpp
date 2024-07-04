@@ -263,7 +263,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-
+	CMario* mario = (CMario*)player;
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
@@ -282,7 +282,7 @@ void CPlayScene::Update(DWORD dt)
 		CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	else if (cy < -115)
 		CGame::GetInstance()->SetCamPos(cx, cy);
-	else if (cy > 90)
+	else if (cy > 90 && mario->inRoom)
 		CGame::GetInstance()->SetCamPos(2048, 200);
 	PurgeDeletedObjects();
 }

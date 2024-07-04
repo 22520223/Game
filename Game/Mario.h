@@ -241,4 +241,5 @@ public:
 	bool isHold = false;
 	bool isKick = false;
 	bool tele = false;
+	bool inRoom = false;
 };

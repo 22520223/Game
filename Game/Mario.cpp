@@ -713,10 +713,12 @@ void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
 	{
 		SetPosition(2115, 260);
 		tele = true;
+		inRoom = true;
 	}
 	else
 	{
 		SetPosition(2335, 125);
+		inRoom = false;
 	}
 }
 
