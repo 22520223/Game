@@ -10,6 +10,7 @@ height	240
 1	scene01.txt
 2	scene02.txt
 5	scene0005.txt
+10	scenetitle.txt
 
 # id	file 
 [TEXTURES]
@@ -19,3 +20,4 @@ height	240
 20	textures\misc.png
 30	textures\enemies2.png
 40	textures\Map_Stage1.png
+50	textures\TextureScene1.png

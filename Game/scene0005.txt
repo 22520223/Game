@@ -21,7 +21,11 @@ plantpiranha.txt
 breakablebrick.txt
 platform.txt
 button.txt
-#
+
+#filePath	mapWidth	mapHeight	tileWidth	tileHeight	texID	texWidth	texHeight
+[TILEMAP]
+scene_1_map.txt	2816	626	16	16	50	320	96
+
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
@@ -58,7 +62,8 @@ button.txt
 1	2360	230
 
 #Map
-11	1408	70
+#11	1408	70
+
 
 
 

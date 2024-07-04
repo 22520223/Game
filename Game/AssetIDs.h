@@ -12,7 +12,7 @@
 #define ID_TEX_MISC 20
 #define ID_TEX_ENEMY2 30
 #define ID_TEX_MAP 40
-#define ID_TILE 41
+#define ID_TILE 50
 
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
@@ -45,6 +45,8 @@ enum SCENE
 	SCENE_1 = 1,
 	SCENE_2 = 2
 };
+
+#define ID_SPRITE_TILE 0
 
 #pragma region MARIO 
 

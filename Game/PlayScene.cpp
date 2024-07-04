@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
+#include <sstream>
 
 #include "PlayScene.h"
 #include "Utils.h"
@@ -9,6 +10,7 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "Define.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -18,13 +20,19 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
+	cameraIndexFollowY = 0;
 	key_handler = new CSampleKeyHandler(this);
+	numsRowInMap = 0;
+	numsColInMap = 0;
+	currentIdPath = 0;
 }
 
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_TILEMAP 3
+#define SCENE_SECTION_PATHOVERWORLD 4
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -87,6 +95,57 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
+void CPlayScene::_ParseSection_TILEMAP(string line)
+{
+	vector<string> tokens = split(line);
+	if (tokens.size() < 8) return;
+	LPCWSTR filePath = ToLPCWSTR(tokens[0]);
+	int mapWidth = atoi(tokens[1].c_str());
+	int mapHeight = atoi(tokens[2].c_str());
+	int tileWidth = atoi(tokens[3].c_str());
+	int tileHeight = atoi(tokens[4].c_str());
+	int texID = atoi(tokens[5].c_str());
+	int texWidth = atoi(tokens[6].c_str());
+	int texHeight = atoi(tokens[7].c_str());
+
+	this->numsColInMap = mapWidth / tileWidth;
+	this->numsRowInMap = mapHeight / tileHeight;
+	int numsColInTex = texWidth / tileWidth;
+	int numsRowInTex = texHeight / tileHeight;
+	int IDSprite = 0;
+
+	LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
+	if (tex == NULL)
+	{
+		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
+		return;
+	}
+	for (int i = 0; i < numsRowInTex; i++)
+	{
+		for (int j = 0; j < numsColInTex; j++)
+		{
+			int ID = ID_SPRITE_TILE + IDSprite;
+			CSprites::GetInstance()->Add(ID, tileWidth * j, tileHeight * i, tileWidth * (j + 1) - 1, tileHeight * (i + 1) - 1, tex);
+			IDSprite++;
+		}
+	}
+	LoadMap(filePath);
+}
+
+
+void CPlayScene::_ParseSection_PATHOVERWORLD(string line) {
+	vector<string> tokens = split(line);
+	if (tokens.size() < 8) return;
+	int idPath = atoi(tokens[0].c_str());
+	float pathX = (float)atof(tokens[1].c_str());
+	float pathY = (float)atof(tokens[2].c_str());
+	int directUp = atoi(tokens[3].c_str());
+	int directDown = atoi(tokens[4].c_str());
+	int directRight = atoi(tokens[5].c_str());
+	int directLeft = atoi(tokens[6].c_str());
+	int scene_id = atoi(tokens[7].c_str());
+	DebugOut(L"[INFO]%d, %f, %f, %d, %d, %d, %d\n", idPath, pathX, pathY, directUp, directDown, directRight, directLeft);
+}
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -231,6 +290,8 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; };
+		if (line == "[PATHOVERWORLD]") { section = SCENE_SECTION_PATHOVERWORLD; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -240,6 +301,8 @@ void CPlayScene::Load()
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP(line); break;
+		case SCENE_SECTION_PATHOVERWORLD: _ParseSection_PATHOVERWORLD(line); break;
 		}
 	}
 
@@ -285,6 +348,23 @@ void CPlayScene::Update(DWORD dt)
 	else if (cy > 90 && mario->inRoom)
 		CGame::GetInstance()->SetCamPos(2048, 200);
 	PurgeDeletedObjects();
+}
+
+void CPlayScene::RenderMap()
+{
+	D3DXVECTOR3 camPosition = game->GetCameraPositon();
+	int startColDraw = (int)camPosition.x / TILE_WIDTH;
+	int endColDraw = startColDraw + SCREEN_WIDTH / TILE_WIDTH;
+
+	for (int i = 0; i < numsRowInMap; i++)
+	{
+		for (int j = startColDraw; j <= endColDraw; j++)
+		{
+			float x = (j - startColDraw) * TILE_WIDTH * 1.0f + camPosition.x - (int)camPosition.x % TILE_WIDTH;
+			float y = i * TILE_HEIGHT * 1.0f;
+			map[i][j]->Draw(x, y);
+		}
+	}
 }
 
 void CPlayScene::Render()
@@ -343,4 +423,35 @@ void CPlayScene::PurgeDeletedObjects()
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
+}
+
+void CPlayScene::LoadMap(LPCWSTR filePath) {
+	DebugOut(L"[INFO] Start loading map from : %s \n", filePath);
+	CSprites* sprites = CSprites::GetInstance();
+	ifstream f;
+	f.open(filePath);
+	if (f.fail())
+	{
+		f.close();
+		return;
+	}
+	int ID = 0;
+	int curRow = 0;
+	int curCol = 0;
+	string line;
+	while(!f.eof())
+	{
+		getline(f, line);
+		vector<LPSPRITE> spriteLine;
+		stringstream ss(line);
+		int n;
+		while (ss >> n)
+		{
+			ID = n;
+			spriteLine.push_back(sprites->Get(ID));
+		}
+		map.push_back(spriteLine);
+	}
+	f.close();
+	return;
 }
