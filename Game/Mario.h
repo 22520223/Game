@@ -146,6 +146,7 @@
 #define MARIO_HIT_TIME 600
 #define MARIO_FLY_TIME 200
 #define MARIO_FLY_KICK 200
+#define MARIO_UNTOUCH_TIME		400
 
 class CMario : public CGameObject
 {
@@ -153,6 +154,7 @@ class CMario : public CGameObject
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
+	BOOLEAN untouch;
 
 	int level;
 	int untouchable;
@@ -162,6 +164,7 @@ class CMario : public CGameObject
 	ULONGLONG timeHit;
 	ULONGLONG timeFly;
 	ULONGLONG timeKick;
+	ULONGLONG untouch_start;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -197,9 +200,11 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
+		untouch_start = -1;
 		timeHit = -1;
 		timeFly = -1;
 		timeKick = -1;
+		untouch = false;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -227,6 +232,7 @@ public:
 	void StartHit() { timeHit = GetTickCount64(); }
 	void StartFly() { timeFly = GetTickCount64(); }
 	void StartKick() { timeKick = GetTickCount64(); }
+	void StartUntouch() { untouch = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	D3DXVECTOR2 GetPosition()

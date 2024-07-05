@@ -14,6 +14,7 @@
 #define EFFECT_TYPE_BREAK_BRICK 300
 #define EFFECT_TYPE_1UP 400
 #define EFFECT_TYPE_OTHER 500
+#define EFFECT_TYPE_UNTOUCH 600
 
 #define ID_ANI_EFFECT 22200
 
@@ -31,6 +32,7 @@
 #define ID_ANI_EFFECT_BRICK_CRUMB (ID_ANI_EFFECT + 100)
 
 #define ID_ANI_EFFECT_1UP (ID_ANI_EFFECT + 110)
+#define ID_ANI_EFFECT_UNTOUCH (ID_ANI_EFFECT + 120)
 
 class CEffects : public CGameObject {
 private:

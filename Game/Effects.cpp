@@ -57,6 +57,10 @@ void CEffects::Render()
 	{
 		aniId = ID_ANI_EFFECT_1UP;
 	}
+	else if (type == EFFECT_TYPE_UNTOUCH)
+	{
+		aniId = ID_ANI_EFFECT_UNTOUCH;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 void CEffects::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

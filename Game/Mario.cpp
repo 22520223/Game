@@ -25,120 +25,132 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
-	if (state == MARIO_STATE_IDLE)
+	if (untouch)
 	{
-		float a = abs(ax);
-		if (vx > 0)
+		vx = 0;
+		vy = 0;
+		if (GetTickCount64() - untouch_start > MARIO_UNTOUCH_TIME)
 		{
-			vx = vx - 40 * a;
-			if (vx < 0)
-				vx = 0;
+			untouch = false;
 		}
-		else
+	}
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
+		if (state == MARIO_STATE_IDLE)
 		{
-			vx = vx + 40 * a;
+			float a = abs(ax);
 			if (vx > 0)
-				vx = 0;
-		}
-	}
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
-	
-	CKoopas* koopas = nullptr;
-
-	for (size_t i = 0; i < coObjects->size(); i++)
-	{
-		LPGAMEOBJECT obj = coObjects->at(i);
-		if (dynamic_cast<CKoopas*>(obj))
-		{
-			koopas = dynamic_cast<CKoopas*>(obj);
-			break;
-		}
-	}
-	if (koopas)
-	{
-		D3DXVECTOR2 marioPosition = this->GetPosition();
-
-		if (koopas->GetState() == KOOPAS_STATE_HOLD)
-		{
-			if (nx > 0)
-				koopas->SetPosition(marioPosition.x + 13, marioPosition.y - 2);
+			{
+				vx = vx - 40 * a;
+				if (vx < 0)
+					vx = 0;
+			}
 			else
-				koopas->SetPosition(marioPosition.x - 13, marioPosition.y - 2);
-			if (!isJKeyDown && nx <= 0)
 			{
-				koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
-				isHold = false;
-				isKick = true;
-				StartKick();
-			}
-			else if (!isJKeyDown && nx > 0)
-			{
-				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
-				isHold = false;
-				isKick = true;
-				StartKick();
+				vx = vx + 40 * a;
+				if (vx > 0)
+					vx = 0;
 			}
 		}
-	}
+		if (abs(vx) > abs(maxVx)) vx = maxVx;
 
-	if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
-	{
-		StartHit();
-		hitLeft = true;
-		isJKeyDownHit = false;
-	}
-	else if (isJKeyDownHit && nx > 0 && level == MARIO_LEVEL_SUPER)
-	{
-		StartHit();
-		hitRight = true;
-		isJKeyDownHit = false;
-	}
+		CKoopas* koopas = nullptr;
 
-	if (GetTickCount64() - timeHit > MARIO_HIT_TIME)
-	{
-		hitRight = hitLeft = false;
-	}
+		for (size_t i = 0; i < coObjects->size(); i++)
+		{
+			LPGAMEOBJECT obj = coObjects->at(i);
+			if (dynamic_cast<CKoopas*>(obj))
+			{
+				koopas = dynamic_cast<CKoopas*>(obj);
+				break;
+			}
+		}
+		if (koopas)
+		{
+			D3DXVECTOR2 marioPosition = this->GetPosition();
 
-	if (isOnPlatform)
-	{
-		isFly = false;
-		aniFly = false;
-	}
-	if (isFly && level == MARIO_LEVEL_SUPER && (vx == MARIO_RUNNING_SPEED || vx == -MARIO_RUNNING_SPEED))
-	{
-		StartFly();
-		ay = -MARIO_GRAVITY * 0.75;
-		isFly = false;
-		aniFly = true;
-	}
-	else if (isFly && level == MARIO_LEVEL_SUPER && (vx < MARIO_RUNNING_SPEED && vx > -MARIO_RUNNING_SPEED))
-	{
-		StartFly();
-		ay = -MARIO_GRAVITY * 0.3;
-		isFly = false;
-		aniFly = true;
-	}
+			if (koopas->GetState() == KOOPAS_STATE_HOLD)
+			{
+				if (nx > 0)
+					koopas->SetPosition(marioPosition.x + 13, marioPosition.y - 2);
+				else
+					koopas->SetPosition(marioPosition.x - 13, marioPosition.y - 2);
+				if (!isJKeyDown && nx <= 0)
+				{
+					koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
+					isHold = false;
+					isKick = true;
+					StartKick();
+				}
+				else if (!isJKeyDown && nx > 0)
+				{
+					koopas->SetState(KOOPAS_STATE_KICK_LEFT);
+					isHold = false;
+					isKick = true;
+					StartKick();
+				}
+			}
+		}
 
-	if (GetTickCount64() - timeFly > MARIO_FLY_TIME)
-	{
-		ay = MARIO_GRAVITY;
-	}
+		if (isJKeyDownHit && nx < 0 && level == MARIO_LEVEL_SUPER)
+		{
+			StartHit();
+			hitLeft = true;
+			isJKeyDownHit = false;
+		}
+		else if (isJKeyDownHit && nx > 0 && level == MARIO_LEVEL_SUPER)
+		{
+			StartHit();
+			hitRight = true;
+			isJKeyDownHit = false;
+		}
 
-	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
+		if (GetTickCount64() - timeHit > MARIO_HIT_TIME)
+		{
+			hitRight = hitLeft = false;
+		}
 
-	if (GetTickCount64() - timeKick > MARIO_FLY_KICK)
-	{
-		isKick = false;
-	}
+		if (isOnPlatform)
+		{
+			isFly = false;
+			aniFly = false;
+		}
+		if (isFly && level == MARIO_LEVEL_SUPER && (vx == MARIO_RUNNING_SPEED || vx == -MARIO_RUNNING_SPEED))
+		{
+			StartFly();
+			ay = -MARIO_GRAVITY * 0.75;
+			isFly = false;
+			aniFly = true;
+		}
+		else if (isFly && level == MARIO_LEVEL_SUPER && (vx < MARIO_RUNNING_SPEED && vx > -MARIO_RUNNING_SPEED))
+		{
+			StartFly();
+			ay = -MARIO_GRAVITY * 0.3;
+			isFly = false;
+			aniFly = true;
+		}
 
-	isOnPlatform = false;
+		if (GetTickCount64() - timeFly > MARIO_FLY_TIME)
+		{
+			ay = MARIO_GRAVITY;
+		}
+
+		// reset untouchable timer if untouchable time has passed
+		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+
+		if (GetTickCount64() - timeKick > MARIO_FLY_KICK)
+		{
+			isKick = false;
+		}
+
+		isOnPlatform = false;
+	}
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -224,12 +236,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SUPER)
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -265,7 +277,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 		{
 			if (level < MARIO_LEVEL_BIG)
 			{
-				level = MARIO_LEVEL_BIG;
+				SetLevel(MARIO_LEVEL_BIG);
 				if (isOnPlatform)
 					vy = -0.2f;
 			}
@@ -396,12 +408,12 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SUPER)
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -508,12 +520,12 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SUPER)
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -534,13 +546,13 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	{
 		if (level < MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel(MARIO_LEVEL_BIG);
 			if (isOnPlatform)
 				vy = -0.2f;
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SUPER;
+			SetLevel(MARIO_LEVEL_SUPER);
 		}
 		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
 		e->obj->Delete();
@@ -561,12 +573,12 @@ void CMario::OnCollisionWithPlantBullet(LPCOLLISIONEVENT e)
 			}
 		else if (level == MARIO_LEVEL_SUPER)
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel(MARIO_LEVEL_BIG);
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else
@@ -585,12 +597,12 @@ void CMario::OnCollisionWithFire(LPCOLLISIONEVENT e)
 	{
 		if (level == MARIO_LEVEL_SUPER)
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel(MARIO_LEVEL_BIG);
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else
@@ -695,12 +707,12 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
 			}
 			else if (level == MARIO_LEVEL_SUPER)
 			{
-				level = MARIO_LEVEL_BIG;
+				SetLevel(MARIO_LEVEL_BIG);
 				StartUntouchable();
 			}
 			else if (level == MARIO_LEVEL_BIG)
 			{
-				level = MARIO_LEVEL_SMALL;
+				SetLevel(MARIO_LEVEL_SMALL);
 				StartUntouchable();
 			}
 			else
@@ -726,12 +738,12 @@ void CMario::OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e)
 			}
 		else if (level == MARIO_LEVEL_SUPER)
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel(MARIO_LEVEL_BIG);
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else
@@ -1046,6 +1058,7 @@ int CMario::GetAniIdSuper()
 
 void CMario::Render()
 {
+	if (untouch) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
@@ -1214,4 +1227,6 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+	StartUntouch();
+	CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_UNTOUCH, 0, 0, 0);
 }
