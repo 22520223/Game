@@ -1,5 +1,6 @@
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Reward.h"
 
 CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
 {
@@ -128,6 +129,7 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 	if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
 	{
+		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 		SetState(GOOMBA_STATE_DEFLECT);
 	}
 }

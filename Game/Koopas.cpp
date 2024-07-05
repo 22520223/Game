@@ -2,6 +2,7 @@
 #include "CheckFall.h"
 #include "PlayScene.h"
 #include "LuckyBrick.h"
+#include "Reward.h"
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -261,5 +262,8 @@ void CKoopas::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 
 	if (e->nx != 0)
 		if (state == KOOPAS_STATE_KICK_LEFT || state == KOOPAS_STATE_KICK_RIGHT)
+		{
+			CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
 			breakabelbrick->Delete();
+		}
 }

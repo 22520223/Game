@@ -17,6 +17,7 @@
 #include "Leaf.h"
 #include "PlantBullet.h"
 #include "Button.h"
+#include "Reward.h"
 
 #include "Collision.h"
 //#include "SampleKeyEventHandler.h"
@@ -205,6 +206,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
+			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -239,6 +241,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
+	CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 	e->obj->Delete();
 	coin++;
 }
@@ -261,6 +264,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 				if (isOnPlatform)
 					vy = -0.2f;
 			}
+			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
 			e->obj->Delete();
 	}
 }
@@ -503,6 +507,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 		{
 			level = MARIO_LEVEL_SUPER;
 		}
+		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
 		e->obj->Delete();
 	}
 }
