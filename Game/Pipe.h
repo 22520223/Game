@@ -13,6 +13,15 @@ class CPipe : public CGameObject {
 public:
 	CPipe(float x, float y) : CGameObject(x, y) {}
 	void Render();
-	void Update(DWORD dt) {}
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+	{
+		if (this->x == 360 || this->x == 1800 || this->x == 1864)
+			isR = true;
+		else
+			isR = false;
+		CGameObject::Update(dt, coObjects);
+		CCollision::GetInstance()->Process(this, dt, coObjects);
+	}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	bool isR;
 };

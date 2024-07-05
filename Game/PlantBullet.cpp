@@ -67,7 +67,7 @@ void CPlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(PLANTBULLET_STATE_UP_LEFT);
 	else if (isOnPlatform && plantPosition.x < marioPosition.x)
 		SetState(PLANTBULLET_STATE_UP_RIGHT);
-	else if (plantPosition.y < 109 && GetState() != PLANTBULLET_STATE_DOWN_LEFT && GetState() != PLANTBULLET_STATE_DOWN_RIGHT)
+	else if (plantPosition.y < 349 && GetState() != PLANTBULLET_STATE_DOWN_LEFT && GetState() != PLANTBULLET_STATE_DOWN_RIGHT)
 		SetState(PLANTBULLET_STATE_SHOOT);
 
 	if (disPy > 40 && disPx < 0)

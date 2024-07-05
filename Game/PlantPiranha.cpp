@@ -65,7 +65,7 @@ void CPlantPiranha::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else if (isOnPlatform)
 		SetState(PLANTPIRANHA_STATE_UP);
-	else if (plantPosition.y < 130 && GetState() != PLANTPIRANHA_STATE_DOWN)
+	else if (plantPosition.y < 368 && GetState() != PLANTPIRANHA_STATE_DOWN)
 		SetState(PLANTPIRANHA_STATE_EAT);
 
 

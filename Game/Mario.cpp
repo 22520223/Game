@@ -742,9 +742,15 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 
 	if (e->nx != 0)
 		if (hitLeft || hitRight)
+		{
 			breakabelbrick->Delete();
+			CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
+		}
 	if (e->ny > 0)
+	{
 		breakabelbrick->Delete();
+		CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
+	}
 }
 
 void CMario::OnCollisionWithMapUnder(LPCOLLISIONEVENT e)
