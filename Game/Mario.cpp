@@ -369,6 +369,7 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
+		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 		if (goombafly->GetState() == GOOMBAFLY_STATE_WALKING_LEFT ||
 			goombafly->GetState() == GOOMBAFLY_STATE_WALKING_RIGHT ||
 			goombafly->GetState() == GOOMBAFLY_STATE_FLY)
@@ -441,6 +442,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		float distance = marioX - koopasX;
 		if (koopas->GetState() == KOOPAS_STATE_WALKING_LEFT || koopas->GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
+			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -448,11 +450,13 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (distance > 0)
 			{
+				CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
 			}
 			else
 			{
+				CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
 			}
@@ -461,6 +465,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
 		{
+			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -605,6 +610,7 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
 		CKoopas* koopas = new CKoopas(koopasflyPosition.x, koopasflyPosition.y);
 		koopas->SetPosition(koopasflyPosition.x, koopasflyPosition.y);
 		koopas->SetState(KOOPAS_STATE_WALKING_LEFT);
+		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene)

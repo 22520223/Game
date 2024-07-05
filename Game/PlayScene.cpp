@@ -339,7 +339,7 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
-
+	
 	if (cx < 0) cx = 0;
 	else if (cx > 2495) cx = 2495;
 	if (cy < -155)	cy = -185;
@@ -349,6 +349,7 @@ void CPlayScene::Update(DWORD dt)
 		CGame::GetInstance()->SetCamPos(cx, cy);
 	else if (cy > 90 && mario->inRoom)
 		CGame::GetInstance()->SetCamPos(2048, 200);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 	PurgeDeletedObjects();
 }
 
@@ -371,6 +372,7 @@ void CPlayScene::RenderMap()
 
 void CPlayScene::Render()
 {
+	RenderMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }

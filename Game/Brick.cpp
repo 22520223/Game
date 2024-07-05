@@ -1,9 +1,9 @@
 #include "Brick.h"
-
+#include "Block.h"
 void CBrick::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_BRICK)->Render(x, y);
+	animations->Get(ID_ANI_BLOCK)->Render(x, y);
 	//RenderBoundingBox();
 }
 
