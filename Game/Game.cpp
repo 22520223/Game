@@ -8,8 +8,11 @@
 #include "Texture.h"
 #include "Animations.h"
 #include "PlayScene.h"
+#include "Reward.h"
 
 CGame* CGame::__instance = NULL;
+
+LPOBJECTPOOL objectPool = CObjectPool::getInstance();
 
 /*
 	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
@@ -530,7 +533,7 @@ void CGame::SwitchScene()
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
 
 	scenes[current_scene]->Unload();
-
+	objectPool->Unload();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 
@@ -538,6 +541,7 @@ void CGame::SwitchScene()
 	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
+	objectPool->startInit();
 }
 
 void CGame::InitiateSwitchScene(int scene_id)
@@ -558,6 +562,8 @@ void CGame::LoadResources()
 
 CGame::~CGame()
 {
+	objectPool->Unload();
+	objectPool->Release();
 	pBlendStateAlpha->Release();
 	spriteObject->Release();
 	pRenderTargetView->Release();

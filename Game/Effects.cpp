@@ -53,8 +53,7 @@ void CEffects::Render()
 	{
 		aniId = ID_ANI_EFFECT_BRICK_CRUMB;
 	}
-	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(aniId)->Render(x, y);
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 void CEffects::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
