@@ -156,6 +156,9 @@
     <ClInclude Include="Reward.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LuckyBoxUp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -279,6 +282,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Reward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LuckyBoxUp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

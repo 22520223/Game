@@ -53,6 +53,10 @@ void CEffects::Render()
 	{
 		aniId = ID_ANI_EFFECT_BRICK_CRUMB;
 	}
+	else if (type == EFFECT_TYPE_1UP)
+	{
+		aniId = ID_ANI_EFFECT_1UP;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 void CEffects::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

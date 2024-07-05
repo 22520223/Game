@@ -28,6 +28,7 @@
 #include "Button.h"
 #include "TileMaps.h"
 #include "Effects.h"
+#include "LuckyBoxUp.h"
 
 class CPlayScene : public CScene
 {

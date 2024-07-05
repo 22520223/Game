@@ -1,9 +1,10 @@
 #include"Mushroom.h"
 
-CMushroom::CMushroom(float x, float y) :CGameObject(x, y)
+CMushroom::CMushroom(float x, float y, bool isGreen) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
+	this->isGreen = isGreen;
 	SetState(MUSHROOM_STATE_WALKING);
 }
 
@@ -49,7 +50,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMushroom::Render()
 {
 	int aniId = ID_ANI_MUSHROOM_WALKING;
-
+	if (isGreen) aniId = ID_ANI_MUSHROOM_GREEN_WALKING;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }

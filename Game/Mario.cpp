@@ -18,6 +18,7 @@
 #include "PlantBullet.h"
 #include "Button.h"
 #include "Reward.h"
+#include "LuckyBoxUp.h"
 
 #include "Collision.h"
 //#include "SampleKeyEventHandler.h"
@@ -195,6 +196,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMapUnder(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
+	else if (dynamic_cast<CLuckyBoxUp*>(e->obj))
+		OnCollisionWithLuckyBoxUp(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -255,9 +258,11 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-
+	e->obj->Delete();
 	if (e->ny != 0 || e->nx != 0)
 	{
+		if (!mushroom->GetGreen())
+		{
 			if (level < MARIO_LEVEL_BIG)
 			{
 				level = MARIO_LEVEL_BIG;
@@ -265,7 +270,9 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 					vy = -0.2f;
 			}
 			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
-			e->obj->Delete();
+		}
+		else
+			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_1UP, 0);
 	}
 }
 
@@ -304,6 +311,29 @@ void CMario::OnCollisionWithLuckyBrick(LPCOLLISIONEVENT e)
 			{
 				playScene->AddObject(leaf);
 			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithLuckyBoxUp(LPCOLLISIONEVENT e)
+{
+	CLuckyBoxUp* luckybrick = dynamic_cast<CLuckyBoxUp*>(e->obj);
+
+	if (e->ny > 0 and luckybrick->GetState() != LUCKYBRICK_STATE5)
+	{
+		luckybrick->SetState(LUCKYBRICK_STATE_DEFLECT);
+		D3DXVECTOR2 luckyBrickPosition = luckybrick->GetPosition();
+
+		float mushroomX = luckyBrickPosition.x;
+		float mushroomY = luckyBrickPosition.y - 20;
+
+		CMushroom* mushroom = new CMushroom(mushroomX, mushroomY, TRUE);
+		mushroom->SetPosition(mushroomX, mushroomY);
+
+		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		if (playScene)
+		{
+			playScene->AddObject(mushroom);
 		}
 	}
 }
