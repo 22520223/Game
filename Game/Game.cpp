@@ -12,7 +12,7 @@
 
 CGame* CGame::__instance = NULL;
 
-LPOBJECTPOOL objectPool = CObjectPool::getInstance();
+LPOBJECTPOOL objectPool = CReward::getInstance();
 
 /*
 	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for

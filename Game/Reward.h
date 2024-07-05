@@ -7,16 +7,16 @@
 #include "Effects.h"
 #include "PlayScene.h"
 
-class CObjectPool
+class CReward
 {
 private:
 	list<CEffects*> effects;
 	bool isInit;
-	static CObjectPool* instance;
-	CObjectPool() {
+	static CReward* instance;
+	CReward() {
 		isInit = false;
 	}
-	~CObjectPool()
+	~CReward()
 	{
 		for (auto it = effects.begin(); it != effects.end(); ++it) {
 			delete* it;
@@ -24,12 +24,12 @@ private:
 		Unload();
 	}
 public:
-	static CObjectPool* getInstance()
+	static CReward* getInstance()
 	{
 		if (instance == NULL)
 		{
 			DebugOut(L"[INFO]Creating ObjectPool.\n");
-			instance = new CObjectPool;
+			instance = new CReward;
 		}
 		return instance;
 	}
@@ -87,4 +87,4 @@ public:
 		effects.clear();
 	}
 };
-typedef CObjectPool* LPOBJECTPOOL;
+typedef CReward* LPOBJECTPOOL;

@@ -263,7 +263,7 @@ void CKoopas::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 	if (e->nx != 0)
 		if (state == KOOPAS_STATE_KICK_LEFT || state == KOOPAS_STATE_KICK_RIGHT)
 		{
-			CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
+			CReward::getInstance()->getEffectBreakBrick(this->x, this->y);
 			breakabelbrick->Delete();
 		}
 }

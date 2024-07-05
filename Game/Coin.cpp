@@ -53,7 +53,7 @@ void CCoin::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 	CLuckyBrickCoin* luckybrickcoin = dynamic_cast<CLuckyBrickCoin*>(e->obj);
 	if (e->ny < 0)
 	{
-		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 		this->Delete();
 	}
 }

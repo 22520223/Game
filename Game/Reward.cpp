@@ -1,3 +1,3 @@
 #include "Reward.h"
 
-CObjectPool* CObjectPool::instance = NULL;
+CReward* CReward::instance = NULL;

@@ -209,7 +209,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
-			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+			CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -244,7 +244,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+	CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 	e->obj->Delete();
 	coin++;
 }
@@ -269,10 +269,10 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 				if (isOnPlatform)
 					vy = -0.2f;
 			}
-			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
+			CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
 		}
 		else
-			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_1UP, 0);
+			CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_1UP, 0);
 	}
 }
 
@@ -369,7 +369,7 @@ void CMario::OnCollisionWithGoombaFly(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 		if (goombafly->GetState() == GOOMBAFLY_STATE_WALKING_LEFT ||
 			goombafly->GetState() == GOOMBAFLY_STATE_WALKING_RIGHT ||
 			goombafly->GetState() == GOOMBAFLY_STATE_FLY)
@@ -442,7 +442,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		float distance = marioX - koopasX;
 		if (koopas->GetState() == KOOPAS_STATE_WALKING_LEFT || koopas->GetState() == KOOPAS_STATE_WALKING_RIGHT)
 		{
-			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+			CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -450,13 +450,13 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (distance > 0)
 			{
-				CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+				CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_RIGHT);
 			}
 			else
 			{
-				CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+				CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 				koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 				koopas->SetState(KOOPAS_STATE_KICK_LEFT);
 			}
@@ -465,7 +465,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_KICK_LEFT || koopas->GetState() == KOOPAS_STATE_KICK_RIGHT)
 		{
-			CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+			CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 			koopas->SetPosition(koopasPosition.x, koopasPosition.y - 5);
 			koopas->SetState(KOOPAS_STATE_IDLE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -542,7 +542,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 		{
 			level = MARIO_LEVEL_SUPER;
 		}
-		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
+		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 1000);
 		e->obj->Delete();
 	}
 }
@@ -555,7 +555,10 @@ void CMario::OnCollisionWithPlantBullet(LPCOLLISIONEVENT e)
 	{
 		if (e->nx != 0)
 			if (hitLeft || hitRight)
+			{
 				plantbullet->Delete();
+				CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+			}
 		else if (level == MARIO_LEVEL_SUPER)
 		{
 			level = MARIO_LEVEL_BIG;
@@ -610,7 +613,7 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e)
 		CKoopas* koopas = new CKoopas(koopasflyPosition.x, koopasflyPosition.y);
 		koopas->SetPosition(koopasflyPosition.x, koopasflyPosition.y);
 		koopas->SetState(KOOPAS_STATE_WALKING_LEFT);
-		CObjectPool::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 
 		CPlayScene* playScene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
 		if (playScene)
@@ -717,7 +720,10 @@ void CMario::OnCollisionWithPlantPiranha(LPCOLLISIONEVENT e)
 	{
 		if (e->nx != 0)
 			if (hitLeft || hitRight)
+			{
 				plantpiranha->Delete();
+				CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+			}
 		else if (level == MARIO_LEVEL_SUPER)
 		{
 			level = MARIO_LEVEL_BIG;
@@ -744,12 +750,12 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 		if (hitLeft || hitRight)
 		{
 			breakabelbrick->Delete();
-			CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
+			CReward::getInstance()->getEffectBreakBrick(this->x, this->y);
 		}
 	if (e->ny > 0)
 	{
 		breakabelbrick->Delete();
-		CObjectPool::getInstance()->getEffectBreakBrick(this->x, this->y);
+		CReward::getInstance()->getEffectBreakBrick(this->x, this->y);
 	}
 }
 
