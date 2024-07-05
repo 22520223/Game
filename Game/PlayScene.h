@@ -27,6 +27,7 @@
 #include "MapUnder.h"
 #include "Button.h"
 #include "TileMaps.h"
+#include "Effects.h"
 
 class CPlayScene : public CScene
 {

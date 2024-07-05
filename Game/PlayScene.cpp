@@ -195,6 +195,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BREAKABLEBRICK: obj = new CBreakableBrick(x, y); break;
 	case OBJECT_TYPE_MAPUNDER: obj = new CMapUnder(x, y); break;
 	case OBJECT_TYPE_BUTTON: obj = new CButton(x, y); break;
+	case OBJECT_TYPE_EFFECTS: obj = new CEffects(x, y, EFFECT_TYPE_POINT, 400); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

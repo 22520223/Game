@@ -21,6 +21,7 @@ plantpiranha.txt
 breakablebrick.txt
 platform.txt
 button.txt
+effects.txt
 
 #filePath	mapWidth	mapHeight	tileWidth	tileHeight	texID	texWidth	texHeight
 [TILEMAP]
@@ -284,3 +285,5 @@ scene_1_map.txt	2816	626	16	16	50	320	96
 20	2270	-123
 20	2335	227
 
+#Effects
+22	20	100
