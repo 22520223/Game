@@ -29,6 +29,7 @@
 #include "TileMaps.h"
 #include "Effects.h"
 #include "LuckyBoxUp.h"
+#include "Player.h"
 
 class CPlayScene : public CScene
 {
@@ -58,6 +59,8 @@ class CPlayScene : public CScene
 protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
+
+	LPGAMEOBJECT hud;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);

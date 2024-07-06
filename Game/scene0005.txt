@@ -22,6 +22,7 @@ breakablebrick.txt
 platform.txt
 button.txt
 effects.txt
+player.txt
 
 #filePath	mapWidth	mapHeight	tileWidth	tileHeight	texID	texWidth	texHeight
 [TILEMAP]
@@ -69,7 +70,9 @@ scene_1_map.txt	2816	626	16	16	50	320	96
 
 
 # MARIO
-0	2262	112
+0	20	300
+
+24	150	185
 
 #COIN
 4	1080	320

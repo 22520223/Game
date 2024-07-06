@@ -1,4 +1,5 @@
 #include "Effects.h"
+#include "Status.h"
 
 CEffects::CEffects() : CGameObject(0, 0)
 {
@@ -110,5 +111,13 @@ void CEffects::SetValue(float x, float y, int type, int point, float ax, float a
 		this->vx = (float)(-100 + rand() % 200) / 700;
 		this->vy = (float)(-100 + rand() % 200) / 1000;
 		this->ay = EFFECT_CRUMB_GRAVITY;
+	}
+	if (type == EFFECT_TYPE_POINT && point != 0)
+	{
+		CStatus::getInstance()->AddPoint(point);
+	}
+	else if (type == EFFECT_TYPE_1UP)
+	{
+		CStatus::getInstance()->AddLife(1);
 	}
 }

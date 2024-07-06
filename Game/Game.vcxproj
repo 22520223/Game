@@ -166,6 +166,7 @@
     <ClInclude Include="PlantBullet.h" />
     <ClInclude Include="PlantPiranha.h" />
     <ClInclude Include="Platform.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="Portal.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="PlantBullet.cpp" />
     <ClCompile Include="PlantPiranha.cpp" />
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Reward.cpp" />

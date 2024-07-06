@@ -21,3 +21,4 @@ height	240
 30	textures\enemies2.png
 40	textures\Map_Stage1.png
 50	textures\TextureScene1.png
+60	textures\maps.png

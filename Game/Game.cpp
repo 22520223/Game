@@ -9,10 +9,12 @@
 #include "Animations.h"
 #include "PlayScene.h"
 #include "Reward.h"
+#include "Status.h"
 
 CGame* CGame::__instance = NULL;
 
-LPOBJECTPOOL objectPool = CReward::getInstance();
+LPOBJECTPOOL reward = CReward::getInstance();
+LPDATAMANAGER dataManager = CStatus::getInstance();
 
 /*
 	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
@@ -121,7 +123,9 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 
 	// create the sprite object to handle sprite drawing 
 	hr = D3DX10CreateSprite(pD3DDevice, 0, &spriteObject);
-
+	/*spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE);
+	D3DXVECTOR2 hudPosition(150, 433);
+	D3DXVECTOR2 hudSize(230, 28);*/
 	if (hr != S_OK)
 	{
 		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
@@ -153,6 +157,18 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 	StateDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
 	pD3DDevice->CreateBlendState(&StateDesc, &this->pBlendStateAlpha);
+
+	font = NULL;
+	AddFontResourceEx(FILEPATH_FONT, FR_PRIVATE, NULL);
+
+	hr = D3DX10CreateFont(
+		GetDirect3DDevice(), 10, 0, FW_NORMAL, 1, false,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		ANTIALIASED_QUALITY, FF_DONTCARE, L"Super Mario Bros. 3", &font);
+	if (hr != DI_OK)
+	{
+		DebugOut(L"[ERROR] Create font failed!\n");
+	}
 
 	DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
 
@@ -533,7 +549,7 @@ void CGame::SwitchScene()
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
 
 	scenes[current_scene]->Unload();
-	objectPool->Unload();
+	reward->Unload();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 
@@ -541,7 +557,7 @@ void CGame::SwitchScene()
 	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
-	objectPool->startInit();
+	reward->startInit();
 }
 
 void CGame::InitiateSwitchScene(int scene_id)
@@ -562,8 +578,9 @@ void CGame::LoadResources()
 
 CGame::~CGame()
 {
-	objectPool->Unload();
-	objectPool->Release();
+	reward->Unload();
+	reward->Release();
+	dataManager->Release();
 	pBlendStateAlpha->Release();
 	spriteObject->Release();
 	pRenderTargetView->Release();

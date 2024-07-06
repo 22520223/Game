@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "LuckyBrickCoin.h"
 #include "Reward.h"
+#include "Status.h"
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -54,6 +55,7 @@ void CCoin::OnCollisionWithLuckyBrickCoin(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+		CStatus::getInstance()->AddCoin(1);
 		this->Delete();
 	}
 }

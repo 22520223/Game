@@ -19,6 +19,7 @@
 #include "Button.h"
 #include "Reward.h"
 #include "LuckyBoxUp.h"
+#include "Status.h"
 
 #include "Collision.h"
 //#include "SampleKeyEventHandler.h"
@@ -256,9 +257,10 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
+	//CReward::getInstance()->getEffect()->SetValue(this->x, this->y, EFFECT_TYPE_POINT, 100);
 	e->obj->Delete();
 	coin++;
+	CStatus::getInstance()->AddCoin(1);
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

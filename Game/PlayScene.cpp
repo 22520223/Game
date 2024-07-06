@@ -20,6 +20,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
+	hud = NULL;
 	cameraIndexFollowY = 0;
 	key_handler = new CSampleKeyHandler(this);
 	numsRowInMap = 0;
@@ -197,6 +198,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BUTTON: obj = new CButton(x, y); break;
 	case OBJECT_TYPE_EFFECTS: obj = new CEffects(x, y, EFFECT_TYPE_POINT, 400); break;
 	case OBJECT_TYPE_LUCKYBOXUP: obj = new CLuckyBoxUp(x, y); break;
+	case OBJECT_TYPE_PLAYER:
+	{
+		obj = new CPlayer(x, y);
+		hud = (CPlayer*)obj;
+		break;
+	}
 
 	case OBJECT_TYPE_PLATFORM:
 	{
@@ -328,6 +335,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	hud->Update(dt);
 	CMario* mario = (CMario*)player;
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -344,7 +352,7 @@ void CPlayScene::Update(DWORD dt)
 	else if (cx > 2495) cx = 2495;
 	if (cy < 80)	cy = 50;
 	if (cy > 120 && cy < 325)
-		CGame::GetInstance()->SetCamPos(cx, 235 /*cy*/);
+		CGame::GetInstance()->SetCamPos(cx, 245 /*cy*/);
 	else if (cy < 120)
 		CGame::GetInstance()->SetCamPos(cx, cy);
 	else if (cy > 325 && mario->inRoom)
